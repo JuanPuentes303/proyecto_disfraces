@@ -10,12 +10,29 @@
 
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<main class="auth-page">
-    <section class="auth-card">
-        <h1>Panel administrador</h1>
-        <p class="auth-subtitle">
-            Aquí podrás subir disfraces, fotos, precios y revisar reservas.
-        </p>
+<main class="admin-page">
+    <section class="admin-header">
+        <div>
+            <h1>Panel administrador</h1>
+            <p>Gestiona disfraces, fotos, precios y reservas.</p>
+        </div>
+    </section>
+
+    <section class="admin-grid">
+        <a href="/admin/disfraces" class="admin-card">
+            <h2>Disfraces</h2>
+            <p>Crear, listar y administrar disfraces.</p>
+        </a>
+
+        <a href="/admin/disfraces/nuevo" class="admin-card">
+            <h2>Subir nuevo disfraz</h2>
+            <p>Agrega fotos, tallas, categorías y precios.</p>
+        </a>
+
+        <a href="#" class="admin-card">
+            <h2>Reservas</h2>
+            <p>Próximamente: revisar reservas de clientes.</p>
+        </a>
     </section>
 </main>
 
