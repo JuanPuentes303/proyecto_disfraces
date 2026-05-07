@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Catálogo - Disfraces Rivera</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="catalog-page">
+
+    <section class="catalog-hero">
+        <div>
+            <span class="hero__tag">Catálogo</span>
+            <h1>Encuentra tu disfraz ideal</h1>
+            <p>
+                Busca por nombre o categoría y revisa los disfraces disponibles para alquiler o compra.
+            </p>
+        </div>
+    </section>
+
+    <section class="catalog-filters">
+        <form th:action="@{/catalogo}" method="get" class="filter-form">
+            <div class="form-group">
+                <label for="busqueda">Buscar disfraz</label>
+                <input type="text"
+                       id="busqueda"
+                       name="busqueda"
+                       th:value="${busqueda}"
+                       placeholder="Ej: vampiro, princesa, payaso...">
+            </div>
+
+            <div class="form-group">
+                <label for="categoriaId">Categoría</label>
+                <select id="categoriaId" name="categoriaId">
+                    <option value="">Todas las categorías</option>
+                    <option th:each="categoria : ${categorias}"
+                            th:value="${categoria.id}"
+                            th:text="${categoria.nombre}"
+                            th:selected="${categoria.id == categoriaSeleccionada}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="filter-actions">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+                <a href="/catalogo" class="btn btn-secondary">Limpiar</a>
+            </div>
+        </form>
+    </section>
+
+    <section class="catalog-section" th:if="${!#lists.isEmpty(aleatorios)}">
+        <div class="section-title">
+            <h2>Disfraces destacados</h2>
+            <p>Una selección aleatoria de disfraces subidos por el administrador.</p>
+        </div>
+
+        <div class="costume-grid">
+            <article class="costume-card" th:each="disfraz : ${aleatorios}">
+                <div class="costume-image">
+                    <img th:if="${!disfraz.imagenes.isEmpty()}"
+                         th:src="@{${disfraz.imagenes[0].urlImagen}}"
+                         th:alt="${disfraz.nombre}">
+
+                    <div class="image-placeholder" th:if="${disfraz.imagenes.isEmpty()}">
+                        Sin imagen
+                    </div>
+                </div>
+
+                <div class="costume-content">
+                    <span class="costume-category"
+                          th:text="${disfraz.categoria != null ? disfraz.categoria.nombre : 'Sin categoría'}">
+                    </span>
+
+                    <h3 th:text="${disfraz.nombre}">Nombre disfraz</h3>
+
+                    <p class="costume-description"
+                       th:text="${disfraz.descripcion != null && !disfraz.descripcion.isEmpty() ? disfraz.descripcion : 'Sin descripción'}">
+                    </p>
+
+                    <div class="costume-meta">
+                        <span th:text="'Talla: ' + ${disfraz.talla}"></span>
+                        <span th:text="${disfraz.genero}"></span>
+                    </div>
+
+                    <div class="costume-price">
+                        <strong th:text="'Alquiler: $' + ${disfraz.precioAlquiler}"></strong>
+                        <small th:if="${disfraz.precioCompra != null}"
+                               th:text="'Compra: $' + ${disfraz.precioCompra}">
+                        </small>
+                    </div>
+
+                    <a th:href="@{/disfraces/{id}(id=${disfraz.id})}" class="btn btn-primary btn-full">
+                        Ver detalle
+                    </a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="catalog-section">
+        <div class="section-title">
+            <h2 th:if="${busqueda == null || busqueda.isEmpty()}">Todos los disfraces</h2>
+            <h2 th:if="${busqueda != null && !busqueda.isEmpty()}">Resultados relacionados</h2>
+
+            <p th:if="${busqueda != null && !busqueda.isEmpty()}"
+               th:text="'Resultados para: ' + ${busqueda}">
+            </p>
+        </div>
+
+        <div class="empty-state" th:if="${#lists.isEmpty(disfraces)}">
+            <h3>No encontramos disfraces relacionados</h3>
+            <p>Prueba con otro nombre o limpia los filtros.</p>
+            <a href="/catalogo" class="btn btn-primary">Ver todos</a>
+        </div>
+
+        <div class="costume-grid" th:if="${!#lists.isEmpty(disfraces)}">
+            <article class="costume-card" th:each="disfraz : ${disfraces}">
+                <div class="costume-image">
+                    <img th:if="${!disfraz.imagenes.isEmpty()}"
+                         th:src="@{${disfraz.imagenes[0].urlImagen}}"
+                         th:alt="${disfraz.nombre}">
+
+                    <div class="image-placeholder" th:if="${disfraz.imagenes.isEmpty()}">
+                        Sin imagen
+                    </div>
+                </div>
+
+                <div class="costume-content">
+                    <span class="costume-category"
+                          th:text="${disfraz.categoria != null ? disfraz.categoria.nombre : 'Sin categoría'}">
+                    </span>
+
+                    <h3 th:text="${disfraz.nombre}">Nombre disfraz</h3>
+
+                    <p class="costume-description"
+                       th:text="${disfraz.descripcion != null && !disfraz.descripcion.isEmpty() ? disfraz.descripcion : 'Sin descripción'}">
+                    </p>
+
+                    <div class="costume-meta">
+                        <span th:text="'Talla: ' + ${disfraz.talla}"></span>
+                        <span th:text="${disfraz.genero}"></span>
+                    </div>
+
+                    <div class="costume-price">
+                        <strong th:text="'Alquiler: $' + ${disfraz.precioAlquiler}"></strong>
+                        <small th:if="${disfraz.precioCompra != null}"
+                               th:text="'Compra: $' + ${disfraz.precioCompra}">
+                        </small>
+                    </div>
+
+                    <a th:href="@{/disfraces/{id}(id=${disfraz.id})}" class="btn btn-primary btn-full">
+                        Ver detalle
+                    </a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

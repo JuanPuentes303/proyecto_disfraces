@@ -32,6 +32,32 @@ public class DisfrazService {
         return disfrazRepository.findByActivoTrue();
     }
 
+    public List<Disfraz> obtenerAleatorios() {
+        return disfrazRepository.obtenerSeisAleatorios();
+    }
+
+    public List<Disfraz> buscarDisfraces(String busqueda, Long categoriaId) {
+        boolean tieneBusqueda = busqueda != null && !busqueda.trim().isEmpty();
+        boolean tieneCategoria = categoriaId != null;
+
+        if (tieneBusqueda && tieneCategoria) {
+            return disfrazRepository.findByNombreContainingIgnoreCaseAndCategoriaIdAndActivoTrue(
+                    busqueda.trim(),
+                    categoriaId
+            );
+        }
+
+        if (tieneBusqueda) {
+            return disfrazRepository.findByNombreContainingIgnoreCaseAndActivoTrue(busqueda.trim());
+        }
+
+        if (tieneCategoria) {
+            return disfrazRepository.findByCategoriaIdAndActivoTrue(categoriaId);
+        }
+
+        return disfrazRepository.findByActivoTrue();
+    }
+
     public void crearDisfraz(DisfrazRequest request, MultipartFile imagen) {
         Categoria categoria = categoriaRepository.findById(request.getCategoriaId())
                 .orElseThrow(() -> new IllegalArgumentException("La categoría seleccionada no existe"));
