@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DisfrazRepository extends JpaRepository<Disfraz, Long> {
 
@@ -15,6 +16,15 @@ public interface DisfrazRepository extends JpaRepository<Disfraz, Long> {
     List<Disfraz> findByCategoriaIdAndActivoTrue(Long categoriaId);
 
     List<Disfraz> findByNombreContainingIgnoreCaseAndCategoriaIdAndActivoTrue(String nombre, Long categoriaId);
+
+    @Query("""
+            SELECT DISTINCT d
+            FROM Disfraz d
+            LEFT JOIN FETCH d.imagenes
+            LEFT JOIN FETCH d.categoria
+            WHERE d.id = :id
+            """)
+    Optional<Disfraz> buscarDetallePorId(Long id);
 
     @Query(value = "SELECT * FROM disfraces WHERE activo = true ORDER BY RAND() LIMIT 6", nativeQuery = true)
     List<Disfraz> obtenerSeisAleatorios();

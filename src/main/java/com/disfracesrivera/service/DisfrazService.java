@@ -1,5 +1,6 @@
 package com.disfracesrivera.service;
 
+import com.disfracesrivera.dto.DisfrazDetalleView;
 import com.disfracesrivera.dto.DisfrazRequest;
 import com.disfracesrivera.model.Categoria;
 import com.disfracesrivera.model.Disfraz;
@@ -7,6 +8,7 @@ import com.disfracesrivera.model.ImagenDisfraz;
 import com.disfracesrivera.repository.CategoriaRepository;
 import com.disfracesrivera.repository.DisfrazRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -82,5 +84,46 @@ public class DisfrazService {
         disfraz.getImagenes().add(imagenDisfraz);
 
         disfrazRepository.save(disfraz);
+    }
+
+    @Transactional(readOnly = true)
+    public Disfraz obtenerPorId(Long id) {
+        return disfrazRepository.buscarDetallePorId(id)
+                .orElseThrow(() -> new IllegalArgumentException("El disfraz no existe"));
+    }
+
+    @Transactional(readOnly = true)
+    public DisfrazDetalleView obtenerDetallePorId(Long id) {
+        Disfraz disfraz = disfrazRepository.buscarDetallePorId(id)
+                .orElseThrow(() -> new IllegalArgumentException("El disfraz no existe"));
+
+        return convertirADetalleView(disfraz);
+    }
+
+    private DisfrazDetalleView convertirADetalleView(Disfraz disfraz) {
+        return new DisfrazDetalleView(
+                disfraz.getId(),
+                disfraz.getNombre(),
+                disfraz.getDescripcion(),
+                disfraz.getTalla(),
+                disfraz.getGenero(),
+                disfraz.getPrecioAlquiler(),
+                disfraz.getPrecioCompra(),
+                disfraz.getCategoria() != null ? disfraz.getCategoria().getNombre() : "Sin categoría",
+                obtenerImagenPrincipal(disfraz)
+        );
+    }
+
+    private String obtenerImagenPrincipal(Disfraz disfraz) {
+        if (disfraz.getImagenes() == null || disfraz.getImagenes().isEmpty()) {
+            return null;
+        }
+
+        return disfraz.getImagenes()
+                .stream()
+                .filter(imagen -> Boolean.TRUE.equals(imagen.getPrincipal()))
+                .findFirst()
+                .orElse(disfraz.getImagenes().get(0))
+                .getUrlImagen();
     }
 }

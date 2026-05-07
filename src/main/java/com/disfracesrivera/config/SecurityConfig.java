@@ -35,8 +35,10 @@ public class SecurityConfig {
                                 "/img/**",
                                 "/uploads/**"
                         ).permitAll()
+                        .requestMatchers("/disfraces/*/reservar").authenticated()
+                        .requestMatchers("/disfraces/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/usuario/**").hasRole("USER")
+                        .requestMatchers("/usuario/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form

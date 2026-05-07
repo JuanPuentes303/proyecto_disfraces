@@ -2,6 +2,7 @@ package com.disfracesrivera.repository;
 
 import com.disfracesrivera.model.EstadoReserva;
 import com.disfracesrivera.model.Reserva;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,6 +12,7 @@ import java.util.List;
 
 public interface ReservaRepository extends JpaRepository<Reserva, Long> {
 
+    @EntityGraph(attributePaths = {"disfraz", "disfraz.imagenes", "usuario"})
     List<Reserva> findByUsuarioId(Long usuarioId);
 
     List<Reserva> findByDisfrazId(Long disfrazId);

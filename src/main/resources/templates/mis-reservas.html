@@ -4,18 +4,71 @@
     <meta charset="UTF-8">
     <title>Mis reservas - Disfraces Rivera</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
 
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<main class="auth-page">
-    <section class="auth-card">
-        <h1>Mis reservas</h1>
-        <p class="auth-subtitle">
-            Aquí aparecerán tus reservas cuando activemos el módulo de reservas.
-        </p>
+<main class="admin-page">
+    <section class="admin-header">
+        <div>
+            <h1>Mis reservas</h1>
+            <p>Consulta los disfraces que has reservado.</p>
+        </div>
+
+        <a href="/catalogo" class="btn btn-primary">Ver catálogo</a>
+    </section>
+
+    <div class="alert alert-success" th:if="${param.creada}">
+        Reserva creada correctamente.
+    </div>
+
+    <section class="admin-table-wrapper">
+        <table class="admin-table">
+            <thead>
+            <tr>
+                <th>Imagen</th>
+                <th>Disfraz</th>
+                <th>Tipo</th>
+                <th>Fecha inicio</th>
+                <th>Fecha fin</th>
+                <th>Estado</th>
+                <th>Observaciones</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="reserva : ${reservas}">
+                <td>
+                    <img class="table-img"
+                         th:if="${reserva.imagenDisfrazUrl != null}"
+                         th:src="@{${reserva.imagenDisfrazUrl}}"
+                         alt="Imagen del disfraz">
+
+                    <span th:if="${reserva.imagenDisfrazUrl == null}">
+                        Sin imagen
+                    </span>
+                </td>
+
+                <td th:text="${reserva.nombreDisfraz}">Nombre disfraz</td>
+                <td th:text="${reserva.tipo}">Tipo</td>
+                <td th:text="${reserva.fechaInicio}">Fecha inicio</td>
+                <td th:text="${reserva.fechaFin}">Fecha fin</td>
+                <td>
+                    <span class="status-pill" th:text="${reserva.estado}">Estado</span>
+                </td>
+                <td th:text="${reserva.observaciones != null ? reserva.observaciones : 'Sin observaciones'}">
+                    Observaciones
+                </td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(reservas)}">
+                <td colspan="7">Todavía no tienes reservas.</td>
+            </tr>
+            </tbody>
+        </table>
     </section>
 </main>
 

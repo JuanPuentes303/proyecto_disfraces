@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${disfraz.nombre} + ' - Disfraces Rivera'">Detalle disfraz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="detail-page">
+
+    <section class="detail-grid">
+        <div class="detail-image-card">
+            <img th:if="${disfraz.imagenPrincipalUrl != null}"
+                 th:src="@{${disfraz.imagenPrincipalUrl}}"
+                 th:alt="${disfraz.nombre}">
+
+            <div class="image-placeholder detail-placeholder"
+                 th:if="${disfraz.imagenPrincipalUrl == null}">
+                Sin imagen
+            </div>
+        </div>
+
+        <div class="detail-info-card">
+            <span class="costume-category"
+                  th:text="${disfraz.nombreCategoria}">
+                Categoría
+            </span>
+
+            <h1 th:text="${disfraz.nombre}">Nombre disfraz</h1>
+
+            <p class="detail-description"
+               th:text="${disfraz.descripcion != null && !disfraz.descripcion.isEmpty() ? disfraz.descripcion : 'Sin descripción'}">
+                Descripción
+            </p>
+
+            <div class="detail-meta">
+                <div>
+                    <strong>Talla</strong>
+                    <span th:text="${disfraz.talla}">Talla</span>
+                </div>
+
+                <div>
+                    <strong>Género</strong>
+                    <span th:text="${disfraz.genero}">Género</span>
+                </div>
+
+                <div>
+                    <strong>Alquiler</strong>
+                    <span th:text="'$' + ${disfraz.precioAlquiler}">$0</span>
+                </div>
+
+                <div th:if="${disfraz.precioCompra != null}">
+                    <strong>Compra</strong>
+                    <span th:text="'$' + ${disfraz.precioCompra}">$0</span>
+                </div>
+            </div>
+
+            <a href="/catalogo" class="btn btn-secondary">Volver al catálogo</a>
+        </div>
+    </section>
+
+    <section class="reservation-section">
+        <div class="section-title">
+            <h2>Reservar este disfraz</h2>
+            <p>Selecciona el tipo de reserva y las fechas en las que necesitas el disfraz.</p>
+        </div>
+
+        <div class="alert alert-error" th:if="${errorReserva}" th:text="${errorReserva}"></div>
+
+        <div sec:authorize="!isAuthenticated()" class="auth-card reservation-login-card">
+            <h3>Debes iniciar sesión para reservar</h3>
+            <p class="auth-subtitle">
+                Crea una cuenta o inicia sesión para apartar este disfraz.
+            </p>
+
+            <div class="hero__actions">
+                <a href="/login" class="btn btn-primary">Iniciar sesión</a>
+                <a href="/registro" class="btn btn-secondary">Crear cuenta</a>
+            </div>
+        </div>
+
+        <form sec:authorize="isAuthenticated()"
+              th:action="@{/disfraces/{id}/reservar(id=${disfraz.id})}"
+              th:object="${reservaRequest}"
+              method="post"
+              class="auth-card reservation-form">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="tipo">Tipo de reserva *</label>
+                    <select id="tipo" th:field="*{tipo}">
+                        <option value="">Seleccione</option>
+                        <option th:each="tipoReserva : ${tiposReserva}"
+                                th:value="${tipoReserva}"
+                                th:text="${tipoReserva}">
+                        </option>
+                    </select>
+                    <small class="field-error" th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="fechaInicio">Fecha inicio *</label>
+                    <input type="date" id="fechaInicio" th:field="*{fechaInicio}">
+                    <small class="field-error" th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}"></small>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="fechaFin">Fecha fin *</label>
+                    <input type="date" id="fechaFin" th:field="*{fechaFin}">
+                    <small class="field-error" th:if="${#fields.hasErrors('fechaFin')}" th:errors="*{fechaFin}"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="observaciones">Observaciones</label>
+                    <input type="text" id="observaciones" th:field="*{observaciones}"
+                           placeholder="Ej: Lo necesito para una fiesta escolar">
+                    <small class="field-error" th:if="${#fields.hasErrors('observaciones')}" th:errors="*{observaciones}"></small>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full">
+                Confirmar reserva
+            </button>
+        </form>
+    </section>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>
