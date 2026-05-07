@@ -1,4 +1,4 @@
-<nav class="navbar" th:fragment="navbar" xmlns:th="http://www.thymeleaf.org">
+<nav class="navbar" th:fragment="navbar" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <div class="navbar__brand">
         <a href="/">Disfraces Rivera</a>
     </div>
@@ -10,7 +10,15 @@
     <div class="navbar__links" id="navbarLinks">
         <a href="/">Inicio</a>
         <a href="/catalogo">Catálogo</a>
-        <a href="/login">Iniciar sesión</a>
-        <a href="/registro" class="btn-nav">Registrarse</a>
+
+        <a href="/admin" sec:authorize="hasRole('ADMIN')">Admin</a>
+        <a href="/usuario/reservas" sec:authorize="hasRole('USER')">Mis reservas</a>
+
+        <a href="/login" sec:authorize="!isAuthenticated()">Iniciar sesión</a>
+        <a href="/registro" class="btn-nav" sec:authorize="!isAuthenticated()">Registrarse</a>
+
+        <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" class="logout-form">
+            <button type="submit" class="logout-button">Cerrar sesión</button>
+        </form>
     </div>
 </nav>

@@ -300,3 +300,17 @@ a {
     color: #ea580c;
     font-weight: bold;
 }
+
+.logout-form {
+    margin: 0;
+}
+
+.logout-button {
+    background: #f97316;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-weight: bold;
+    cursor: pointer;
+}
