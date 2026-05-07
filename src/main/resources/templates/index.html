@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Disfraces Rivera</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main>
+    <section class="hero">
+        <div class="hero__content">
+            <span class="hero__tag">Alquiler y venta de disfraces</span>
+
+            <h1>Encuentra el disfraz perfecto para tu ocasión</h1>
+
+            <p>
+                Explora nuestro catálogo, revisa disponibilidad y reserva de forma fácil.
+                Ideal para Halloween, eventos escolares, fiestas temáticas y celebraciones.
+            </p>
+
+            <div class="hero__actions">
+                <a href="/catalogo" class="btn btn-primary">Ver catálogo</a>
+                <a href="/registro" class="btn btn-secondary">Crear cuenta</a>
+            </div>
+        </div>
+
+        <div class="hero__card">
+            <h2>¿Qué podrás hacer?</h2>
+
+            <ul>
+                <li>Consultar disfraces disponibles.</li>
+                <li>Buscar por nombre o categoría.</li>
+                <li>Reservar por fechas.</li>
+                <li>Comprar o alquilar disfraces.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="features">
+        <article class="feature-card">
+            <h3>Catálogo organizado</h3>
+            <p>Los disfraces estarán separados por categorías, tallas y estilos.</p>
+        </article>
+
+        <article class="feature-card">
+            <h3>Reservas simples</h3>
+            <p>El usuario podrá elegir fechas y saber si el disfraz está disponible.</p>
+        </article>
+
+        <article class="feature-card">
+            <h3>Gestión admin</h3>
+            <p>El administrador podrá subir fotos, precios y datos desde su apartado.</p>
+        </article>
+    </section>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>
