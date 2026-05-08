@@ -21,15 +21,18 @@ public class ReservaService {
     private final ReservaRepository reservaRepository;
     private final UsuarioRepository usuarioRepository;
     private final DisfrazRepository disfrazRepository;
+    private final EmailService emailService;
 
     public ReservaService(
             ReservaRepository reservaRepository,
             UsuarioRepository usuarioRepository,
-            DisfrazRepository disfrazRepository
+            DisfrazRepository disfrazRepository,
+            EmailService emailService
     ) {
         this.reservaRepository = reservaRepository;
         this.usuarioRepository = usuarioRepository;
         this.disfrazRepository = disfrazRepository;
+        this.emailService = emailService;
     }
 
     @Transactional
@@ -46,7 +49,7 @@ public class ReservaService {
         Usuario usuario = usuarioRepository.findByCorreo(correoUsuario.toLowerCase().trim())
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
 
-        Disfraz disfraz = disfrazRepository.findById(disfrazId)
+        Disfraz disfraz = disfrazRepository.buscarDetallePorId(disfrazId)
                 .orElseThrow(() -> new IllegalArgumentException("Disfraz no encontrado"));
 
         boolean hayCruce = reservaRepository.existeCruceDeFechas(
@@ -68,7 +71,9 @@ public class ReservaService {
         reserva.setEstado(EstadoReserva.ACTIVA);
         reserva.setObservaciones(request.getObservaciones());
 
-        reservaRepository.save(reserva);
+        Reserva reservaGuardada = reservaRepository.save(reserva);
+
+        emailService.enviarCorreoReservaAdmin(reservaGuardada);
     }
 
     @Transactional
