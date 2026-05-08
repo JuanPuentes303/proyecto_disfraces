@@ -70,6 +70,51 @@
             <p>Selecciona el tipo de reserva y las fechas en las que necesitas el disfraz.</p>
         </div>
 
+        <div class="availability-card">
+    <h3>Consultar disponibilidad</h3>
+    <p>Antes de reservar, verifica si el disfraz está libre para las fechas que necesitas.</p>
+
+    <form th:action="@{/disfraces/{id}/disponibilidad(id=${disfraz.id})}"
+          method="get"
+          class="availability-form">
+
+        <div class="form-group">
+            <label for="fechaInicioConsulta">Fecha inicio</label>
+            <input type="date"
+                   id="fechaInicioConsulta"
+                   name="fechaInicio"
+                   th:value="${fechaInicioConsulta}">
+        </div>
+
+        <div class="form-group">
+            <label for="fechaFinConsulta">Fecha fin</label>
+            <input type="date"
+                   id="fechaFinConsulta"
+                   name="fechaFin"
+                   th:value="${fechaFinConsulta}">
+        </div>
+
+        <button type="submit" class="btn btn-secondary">
+            Verificar
+        </button>
+    </form>
+
+    <div class="alert alert-success"
+         th:if="${mensajeDisponibilidad != null and disponibleConsulta == true}"
+         th:text="${mensajeDisponibilidad}">
+    </div>
+
+    <div class="alert alert-error"
+            th:if="${mensajeDisponibilidad != null and disponibleConsulta == false}"
+            th:text="${mensajeDisponibilidad}">
+        </div>
+
+        <div class="alert alert-error"
+            th:if="${errorDisponibilidad}"
+            th:text="${errorDisponibilidad}">
+        </div>
+    </div>
+
         <div class="alert alert-error" th:if="${errorReserva}" th:text="${errorReserva}"></div>
 
         <div sec:authorize="!isAuthenticated()" class="auth-card reservation-login-card">

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,12 +33,13 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
             """)
     boolean existeCruceDeFechas(Long disfrazId, LocalDate fechaInicio, LocalDate fechaFin);
 
-    @Modifying
-    @Query("""
-            UPDATE Reserva r
-            SET r.estado = 'VENCIDA'
-            WHERE r.estado = 'ACTIVA'
-            AND r.fechaFin < :fechaActual
-            """)
-    void marcarReservasVencidas(LocalDate fechaActual);
+        @Modifying
+        @Transactional
+        @Query("""
+                UPDATE Reserva r
+                SET r.estado = 'VENCIDA'
+                WHERE r.estado = 'ACTIVA'
+                AND r.fechaFin < :fechaActual
+                """)
+        void marcarReservasVencidas(LocalDate fechaActual);
 }

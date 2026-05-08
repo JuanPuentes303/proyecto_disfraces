@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @Controller
 @RequestMapping("/disfraces")
 public class DisfrazController {
@@ -32,6 +34,42 @@ public class DisfrazController {
         DisfrazDetalleView disfraz = disfrazService.obtenerDetallePorId(id);
 
         prepararModeloDetalle(model, disfraz, new ReservaRequest());
+
+        return "detalle-disfraz";
+    }
+
+    @GetMapping("/{id}/disponibilidad")
+    public String consultarDisponibilidad(
+            @PathVariable Long id,
+            @RequestParam(required = false) LocalDate fechaInicio,
+            @RequestParam(required = false) LocalDate fechaFin,
+            Model model
+    ) {
+        DisfrazDetalleView disfraz = disfrazService.obtenerDetallePorId(id);
+
+        ReservaRequest reservaRequest = new ReservaRequest();
+        reservaRequest.setFechaInicio(fechaInicio);
+        reservaRequest.setFechaFin(fechaFin);
+
+        prepararModeloDetalle(model, disfraz, reservaRequest);
+
+        model.addAttribute("fechaInicioConsulta", fechaInicio);
+        model.addAttribute("fechaFinConsulta", fechaFin);
+
+        try {
+            boolean disponible = reservaService.estaDisponible(id, fechaInicio, fechaFin);
+
+            if (disponible) {
+                model.addAttribute("mensajeDisponibilidad", "El disfraz está disponible para esas fechas.");
+                model.addAttribute("disponibleConsulta", true);
+            } else {
+                model.addAttribute("mensajeDisponibilidad", "El disfraz no está disponible para esas fechas.");
+                model.addAttribute("disponibleConsulta", false);
+            }
+
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorDisponibilidad", e.getMessage());
+        }
 
         return "detalle-disfraz";
     }

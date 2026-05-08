@@ -206,4 +206,29 @@ public class ReservaService {
             throw new IllegalArgumentException("La fecha de fin no puede ser anterior a la fecha de inicio");
         }
     }
+
+    @Transactional
+    public boolean estaDisponible(Long disfrazId, LocalDate fechaInicio, LocalDate fechaFin) {
+        if (fechaInicio == null || fechaFin == null) {
+            throw new IllegalArgumentException("Debe seleccionar fecha de inicio y fecha de fin");
+        }
+
+        LocalDate hoy = LocalDate.now();
+
+        if (fechaInicio.isBefore(hoy)) {
+            throw new IllegalArgumentException("La fecha de inicio no puede estar en el pasado");
+        }
+
+        if (fechaFin.isBefore(hoy)) {
+            throw new IllegalArgumentException("La fecha de fin no puede estar en el pasado");
+        }
+
+        if (fechaFin.isBefore(fechaInicio)) {
+            throw new IllegalArgumentException("La fecha de fin no puede ser anterior a la fecha de inicio");
+        }
+
+        reservaRepository.marcarReservasVencidas(LocalDate.now());
+
+        return !reservaRepository.existeCruceDeFechas(disfrazId, fechaInicio, fechaFin);
+    }
 }
