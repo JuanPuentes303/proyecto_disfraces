@@ -24,26 +24,73 @@
     </section>
 
     <section class="catalog-filters">
-        <form th:action="@{/catalogo}" method="get" class="filter-form">
+        <form th:action="@{/catalogo}" method="get" class="filter-form advanced-filter-form">
             <div class="form-group">
                 <label for="busqueda">Buscar disfraz</label>
                 <input type="text"
-                       id="busqueda"
-                       name="busqueda"
-                       th:value="${busqueda}"
-                       placeholder="Ej: vampiro, princesa, payaso...">
+                    id="busqueda"
+                    name="busqueda"
+                    th:value="${busqueda}"
+                    placeholder="Ej: vampiro, princesa, payaso...">
             </div>
 
             <div class="form-group">
                 <label for="categoriaId">Categoría</label>
                 <select id="categoriaId" name="categoriaId">
-                    <option value="">Todas las categorías</option>
+                    <option value="">Todas</option>
                     <option th:each="categoria : ${categorias}"
                             th:value="${categoria.id}"
                             th:text="${categoria.nombre}"
                             th:selected="${categoria.id == categoriaSeleccionada}">
                     </option>
                 </select>
+            </div>
+
+            <div class="form-group">
+                <label for="talla">Talla</label>
+                <select id="talla" name="talla">
+                    <option value="">Todas</option>
+                    <option value="XS" th:selected="${tallaSeleccionada == 'XS'}">XS</option>
+                    <option value="S" th:selected="${tallaSeleccionada == 'S'}">S</option>
+                    <option value="M" th:selected="${tallaSeleccionada == 'M'}">M</option>
+                    <option value="L" th:selected="${tallaSeleccionada == 'L'}">L</option>
+                    <option value="XL" th:selected="${tallaSeleccionada == 'XL'}">XL</option>
+                    <option value="Infantil" th:selected="${tallaSeleccionada == 'Infantil'}">Infantil</option>
+                    <option value="Única" th:selected="${tallaSeleccionada == 'Única'}">Única</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="genero">Género</label>
+                <select id="genero" name="genero">
+                    <option value="">Todos</option>
+                    <option value="Femenino" th:selected="${generoSeleccionado == 'Femenino'}">Femenino</option>
+                    <option value="Masculino" th:selected="${generoSeleccionado == 'Masculino'}">Masculino</option>
+                    <option value="Unisex" th:selected="${generoSeleccionado == 'Unisex'}">Unisex</option>
+                    <option value="Infantil" th:selected="${generoSeleccionado == 'Infantil'}">Infantil</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="precioMin">Precio mínimo</label>
+                <input type="number"
+                    id="precioMin"
+                    name="precioMin"
+                    min="0"
+                    step="1000"
+                    th:value="${precioMin}"
+                    placeholder="Ej: 20000">
+            </div>
+
+            <div class="form-group">
+                <label for="precioMax">Precio máximo</label>
+                <input type="number"
+                    id="precioMax"
+                    name="precioMax"
+                    min="0"
+                    step="1000"
+                    th:value="${precioMax}"
+                    placeholder="Ej: 80000">
             </div>
 
             <div class="filter-actions">

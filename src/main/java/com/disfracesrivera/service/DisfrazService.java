@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -38,26 +39,30 @@ public class DisfrazService {
         return disfrazRepository.obtenerSeisAleatorios();
     }
 
-    public List<Disfraz> buscarDisfraces(String busqueda, Long categoriaId) {
-        boolean tieneBusqueda = busqueda != null && !busqueda.trim().isEmpty();
-        boolean tieneCategoria = categoriaId != null;
+    public List<Disfraz> buscarDisfraces(
+            String busqueda,
+            Long categoriaId,
+            String talla,
+            String genero,
+            BigDecimal precioMin,
+            BigDecimal precioMax
+    ) {
+        return disfrazRepository.buscarConFiltros(
+                limpiarTexto(busqueda),
+                categoriaId,
+                limpiarTexto(talla),
+                limpiarTexto(genero),
+                precioMin,
+                precioMax
+        );
+    }
 
-        if (tieneBusqueda && tieneCategoria) {
-            return disfrazRepository.findByNombreContainingIgnoreCaseAndCategoriaIdAndActivoTrue(
-                    busqueda.trim(),
-                    categoriaId
-            );
+    private String limpiarTexto(String valor) {
+        if (valor == null || valor.trim().isEmpty()) {
+            return null;
         }
 
-        if (tieneBusqueda) {
-            return disfrazRepository.findByNombreContainingIgnoreCaseAndActivoTrue(busqueda.trim());
-        }
-
-        if (tieneCategoria) {
-            return disfrazRepository.findByCategoriaIdAndActivoTrue(categoriaId);
-        }
-
-        return disfrazRepository.findByActivoTrue();
+        return valor.trim();
     }
 
     public void crearDisfraz(DisfrazRequest request, MultipartFile imagen) {

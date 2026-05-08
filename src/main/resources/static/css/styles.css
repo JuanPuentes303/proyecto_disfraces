@@ -810,3 +810,33 @@ a {
         grid-template-columns: 1fr;
     }
 }
+
+.advanced-filter-form {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.advanced-filter-form .filter-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+}
+
+@media (max-width: 1000px) {
+    .advanced-filter-form {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 650px) {
+    .advanced-filter-form {
+        grid-template-columns: 1fr;
+    }
+
+    .advanced-filter-form .filter-actions {
+        justify-content: stretch;
+    }
+
+    .advanced-filter-form .filter-actions .btn {
+        width: 100%;
+        text-align: center;
+    }
+}
