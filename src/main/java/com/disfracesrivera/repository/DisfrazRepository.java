@@ -41,6 +41,15 @@ public interface DisfrazRepository extends JpaRepository<Disfraz, Long> {
             """)
     Optional<Disfraz> buscarDetallePorId(Long id);
 
+    @Query("""
+            SELECT DISTINCT d
+            FROM Disfraz d
+            LEFT JOIN FETCH d.imagenes
+            LEFT JOIN FETCH d.categoria
+            ORDER BY d.fechaCreacion DESC
+            """)
+    List<Disfraz> listarTodosConDetalle();
+
     @Query(value = "SELECT * FROM disfraces WHERE activo = true ORDER BY RAND() LIMIT 6", nativeQuery = true)
     List<Disfraz> obtenerSeisAleatorios();
 }

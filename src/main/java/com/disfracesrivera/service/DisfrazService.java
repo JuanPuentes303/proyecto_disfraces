@@ -1,6 +1,7 @@
 package com.disfracesrivera.service;
 
 import com.disfracesrivera.dto.DisfrazDetalleView;
+import com.disfracesrivera.dto.DisfrazAdminView;
 import com.disfracesrivera.dto.DisfrazRequest;
 import com.disfracesrivera.model.Categoria;
 import com.disfracesrivera.model.Disfraz;
@@ -201,5 +202,29 @@ public class DisfrazService {
         nuevaImagen.setDisfraz(disfraz);
 
         disfraz.getImagenes().add(nuevaImagen);
+    }
+
+    @Transactional(readOnly = true)
+    public List<DisfrazAdminView> listarTodosAdmin() {
+        return disfrazRepository.listarTodosConDetalle()
+                .stream()
+                .map(this::convertirAAdminView)
+                .toList();
+    }
+
+    private DisfrazAdminView convertirAAdminView(Disfraz disfraz) {
+        return new DisfrazAdminView(
+                disfraz.getId(),
+                disfraz.getNombre(),
+                disfraz.getDescripcion(),
+                disfraz.getTalla(),
+                disfraz.getGenero(),
+                disfraz.getPrecioAlquiler(),
+                disfraz.getPrecioCompra(),
+                disfraz.getDisponibleVenta(),
+                disfraz.getActivo(),
+                disfraz.getCategoria() != null ? disfraz.getCategoria().getNombre() : "Sin categoría",
+                obtenerImagenPrincipal(disfraz)
+        );
     }
 }
