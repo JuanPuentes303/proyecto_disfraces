@@ -14,18 +14,17 @@
 <main>
     <section class="hero">
         <div class="hero__content">
-            <span class="hero__tag">Alquiler y venta de disfraces</span>
+            <span class="hero__tag" th:text="#{home.hero.tag}">Alquiler y venta de disfraces</span>
 
-            <h1>Encuentra el disfraz perfecto para tu ocasión</h1>
+            <h1 th:text="#{home.hero.title}">Encuentra el disfraz perfecto para tu ocasión</h1>
 
-            <p>
+            <p th:text="#{home.hero.description}">
                 Explora nuestro catálogo, revisa disponibilidad y reserva de forma fácil.
-                Ideal para Halloween, eventos escolares, fiestas temáticas y celebraciones.
             </p>
 
             <div class="hero__actions">
-                <a href="/catalogo" class="btn btn-primary">Ver catálogo</a>
-                <a href="/registro" class="btn btn-secondary">Crear cuenta</a>
+                <a href="/catalogo" class="btn btn-primary" th:text="#{home.hero.catalog}">Ver catálogo</a>
+                <a href="/registro" class="btn btn-secondary" th:text="#{home.hero.register}">Crear cuenta</a>
             </div>
         </div>
 

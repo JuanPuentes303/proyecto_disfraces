@@ -897,3 +897,22 @@ a {
         max-width: 68px;
     }
 }
+
+.language-switcher {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 7px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.language-switcher a {
+    color: white;
+}
+
+.language-switcher span {
+    opacity: 0.6;
+}

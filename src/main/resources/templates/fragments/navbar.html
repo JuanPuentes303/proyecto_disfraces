@@ -1,6 +1,6 @@
 <nav class="navbar" th:fragment="navbar" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <div class="navbar__brand">
-        <a href="/">Disfraces Rivera</a>
+        <a href="/" th:text="#{app.name}">Disfraces Rivera</a>
     </div>
 
     <button class="navbar__toggle" id="navbarToggle" type="button">
@@ -8,17 +8,23 @@
     </button>
 
     <div class="navbar__links" id="navbarLinks">
-        <a href="/">Inicio</a>
-        <a href="/catalogo">Catálogo</a>
+        <a href="/" th:text="#{nav.home}">Inicio</a>
+        <a href="/catalogo" th:text="#{nav.catalog}">Catálogo</a>
 
-        <a href="/admin" sec:authorize="hasRole('ADMIN')">Admin</a>
-        <a href="/usuario/reservas" sec:authorize="hasRole('USER')">Mis reservas</a>
+        <a href="/admin" sec:authorize="hasRole('ADMIN')" th:text="#{nav.admin}">Admin</a>
+        <a href="/usuario/reservas" sec:authorize="hasAnyRole('USER','ADMIN')" th:text="#{nav.myReservations}">Mis reservas</a>
 
-        <a href="/login" sec:authorize="!isAuthenticated()">Iniciar sesión</a>
-        <a href="/registro" class="btn-nav" sec:authorize="!isAuthenticated()">Registrarse</a>
+        <a href="/login" sec:authorize="!isAuthenticated()" th:text="#{nav.login}">Iniciar sesión</a>
+        <a href="/registro" class="btn-nav" sec:authorize="!isAuthenticated()" th:text="#{nav.register}">Registrarse</a>
 
         <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" class="logout-form">
-            <button type="submit" class="logout-button">Cerrar sesión</button>
+            <button type="submit" class="logout-button" th:text="#{nav.logout}">Cerrar sesión</button>
         </form>
+
+        <div class="language-switcher">
+            <a href="?lang=es">ES</a>
+            <span>|</span>
+            <a href="?lang=en">EN</a>
+        </div>
     </div>
 </nav>

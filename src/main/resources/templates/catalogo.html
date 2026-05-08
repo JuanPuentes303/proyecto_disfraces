@@ -16,9 +16,9 @@
     <section class="catalog-hero">
         <div>
             <span class="hero__tag">Catálogo</span>
-            <h1>Encuentra tu disfraz ideal</h1>
-            <p>
-                Busca por nombre o categoría y revisa los disfraces disponibles para alquiler o compra.
+            <h1 th:text="#{catalog.title}">Encuentra tu disfraz ideal</h1>
+            <p th:text="#{catalog.subtitle}">
+                Busca por nombre o categoría y revisa disponibilidad para tus fechas. ¡Reserva fácil y rápido!
             </p>
         </div>
     </section>
@@ -26,7 +26,7 @@
     <section class="catalog-filters">
         <form th:action="@{/catalogo}" method="get" class="filter-form advanced-filter-form">
             <div class="form-group">
-                <label for="busqueda">Buscar disfraz</label>
+                <label for="busqueda" th:text="#{catalog.search}">Buscar disfraz</label>
                 <input type="text"
                     id="busqueda"
                     name="busqueda"
@@ -35,7 +35,7 @@
             </div>
 
             <div class="form-group">
-                <label for="categoriaId">Categoría</label>
+                <label for="categoriaId" th:text="#{catalog.category}">Categoría</label>
                 <select id="categoriaId" name="categoriaId">
                     <option value="">Todas</option>
                     <option th:each="categoria : ${categorias}"
@@ -47,7 +47,7 @@
             </div>
 
             <div class="form-group">
-                <label for="talla">Talla</label>
+                <label for="talla" th:text="#{catalog.size}">Talla</label>
                 <select id="talla" name="talla">
                     <option value="">Todas</option>
                     <option value="XS" th:selected="${tallaSeleccionada == 'XS'}">XS</option>
@@ -61,7 +61,7 @@
             </div>
 
             <div class="form-group">
-                <label for="genero">Género</label>
+                <label for="genero" th:text="#{catalog.gender}">Género</label>
                 <select id="genero" name="genero">
                     <option value="">Todos</option>
                     <option value="Femenino" th:selected="${generoSeleccionado == 'Femenino'}">Femenino</option>
@@ -72,7 +72,7 @@
             </div>
 
             <div class="form-group">
-                <label for="precioMin">Precio mínimo</label>
+                <label for="precioMin" th:text="#{catalog.minPrice}">Precio mínimo</label>
                 <input type="number"
                     id="precioMin"
                     name="precioMin"
@@ -83,7 +83,7 @@
             </div>
 
             <div class="form-group">
-                <label for="precioMax">Precio máximo</label>
+                <label for="precioMax" th:text="#{catalog.maxPrice}">Precio máximo</label>
                 <input type="number"
                     id="precioMax"
                     name="precioMax"
@@ -94,8 +94,8 @@
             </div>
 
             <div class="filter-actions">
-                <button type="submit" class="btn btn-primary">Buscar</button>
-                <a href="/catalogo" class="btn btn-secondary">Limpiar</a>
+                <button type="submit" class="btn btn-primary" th:text="#{catalog.searchButton}">Buscar</button>
+            <a href="/catalogo" class="btn btn-secondary" th:text="#{catalog.clear}">Limpiar</a>
             </div>
         </form>
     </section>
@@ -141,7 +141,7 @@
                         </small>
                     </div>
 
-                    <a th:href="@{/disfraces/{id}(id=${disfraz.id})}" class="btn btn-primary btn-full">
+                    <a th:href="@{/disfraces/{id}(id=${disfraz.id})}" class="btn btn-primary btn-full" th:text="#{catalog.detail}">
                         Ver detalle
                     </a>
                 </div>
@@ -200,7 +200,7 @@
                         </small>
                     </div>
 
-                    <a th:href="@{/disfraces/{id}(id=${disfraz.id})}" class="btn btn-primary btn-full">
+                    <a th:href="@{/disfraces/{id}(id=${disfraz.id})}" class="btn btn-primary btn-full" th:text="#{catalog.detail}">
                         Ver detalle
                     </a>
                 </div>
