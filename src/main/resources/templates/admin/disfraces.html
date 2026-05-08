@@ -24,6 +24,14 @@
         Disfraz creado correctamente.
     </div>
 
+    <div class="alert alert-success" th:if="${param.actualizado}">
+        Disfraz actualizado correctamente.
+    </div>
+
+    <div class="alert alert-success" th:if="${param.desactivado}">
+        Disfraz desactivado correctamente.
+    </div>
+
     <section class="admin-table-wrapper">
         <table class="admin-table">
             <thead>
@@ -35,6 +43,7 @@
                 <th>Género</th>
                 <th>Alquiler</th>
                 <th>Compra</th>
+                <th>Acciones</th>
             </tr>
             </thead>
 
@@ -55,10 +64,27 @@
                 <td th:text="${disfraz.genero}"></td>
                 <td th:text="${'$' + disfraz.precioAlquiler}"></td>
                 <td th:text="${disfraz.precioCompra != null ? '$' + disfraz.precioCompra : 'No disponible'}"></td>
+
+                <td>
+                    <div class="table-actions">
+                        <a th:href="@{/admin/disfraces/{id}/editar(id=${disfraz.id})}"
+                           class="btn-small btn-edit">
+                            Editar
+                        </a>
+
+                        <form th:action="@{/admin/disfraces/{id}/desactivar(id=${disfraz.id})}"
+                              method="post"
+                              onsubmit="return confirm('¿Seguro que deseas desactivar este disfraz?');">
+                            <button type="submit" class="btn-small btn-danger">
+                                Desactivar
+                            </button>
+                        </form>
+                    </div>
+                </td>
             </tr>
 
             <tr th:if="${#lists.isEmpty(disfraces)}">
-                <td colspan="7">Todavía no hay disfraces registrados.</td>
+                <td colspan="8">Todavía no hay disfraces registrados.</td>
             </tr>
             </tbody>
         </table>

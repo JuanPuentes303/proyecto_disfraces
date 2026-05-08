@@ -7,6 +7,7 @@ import com.disfracesrivera.model.Disfraz;
 import com.disfracesrivera.model.ImagenDisfraz;
 import com.disfracesrivera.repository.CategoriaRepository;
 import com.disfracesrivera.repository.DisfrazRepository;
+import com.disfracesrivera.repository.ImagenDisfrazRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,15 +21,18 @@ public class DisfrazService {
     private final DisfrazRepository disfrazRepository;
     private final CategoriaRepository categoriaRepository;
     private final ArchivoService archivoService;
+    private final ImagenDisfrazRepository imagenDisfrazRepository;
 
     public DisfrazService(
             DisfrazRepository disfrazRepository,
             CategoriaRepository categoriaRepository,
-            ArchivoService archivoService
+            ArchivoService archivoService,
+            ImagenDisfrazRepository imagenDisfrazRepository
     ) {
         this.disfrazRepository = disfrazRepository;
         this.categoriaRepository = categoriaRepository;
         this.archivoService = archivoService;
+        this.imagenDisfrazRepository = imagenDisfrazRepository;
     }
 
     public List<Disfraz> listarActivos() {
@@ -130,5 +134,72 @@ public class DisfrazService {
                 .findFirst()
                 .orElse(disfraz.getImagenes().get(0))
                 .getUrlImagen();
+    }
+
+    @Transactional(readOnly = true)
+    public DisfrazRequest obtenerRequestParaEditar(Long id) {
+        Disfraz disfraz = disfrazRepository.buscarDetallePorId(id)
+                .orElseThrow(() -> new IllegalArgumentException("El disfraz no existe"));
+
+        DisfrazRequest request = new DisfrazRequest();
+        request.setNombre(disfraz.getNombre());
+        request.setDescripcion(disfraz.getDescripcion());
+        request.setTalla(disfraz.getTalla());
+        request.setGenero(disfraz.getGenero());
+        request.setPrecioAlquiler(disfraz.getPrecioAlquiler());
+        request.setPrecioCompra(disfraz.getPrecioCompra());
+        request.setDisponibleVenta(disfraz.getDisponibleVenta());
+
+        if (disfraz.getCategoria() != null) {
+            request.setCategoriaId(disfraz.getCategoria().getId());
+        }
+
+        return request;
+    }
+
+    @Transactional
+    public void actualizarDisfraz(Long id, DisfrazRequest request, MultipartFile imagen) {
+        Disfraz disfraz = disfrazRepository.buscarDetallePorId(id)
+                .orElseThrow(() -> new IllegalArgumentException("El disfraz no existe"));
+
+        Categoria categoria = categoriaRepository.findById(request.getCategoriaId())
+                .orElseThrow(() -> new IllegalArgumentException("La categoría seleccionada no existe"));
+
+        disfraz.setNombre(request.getNombre());
+        disfraz.setDescripcion(request.getDescripcion());
+        disfraz.setTalla(request.getTalla());
+        disfraz.setGenero(request.getGenero());
+        disfraz.setPrecioAlquiler(request.getPrecioAlquiler());
+        disfraz.setPrecioCompra(request.getPrecioCompra());
+        disfraz.setDisponibleVenta(request.getDisponibleVenta() != null ? request.getDisponibleVenta() : false);
+        disfraz.setCategoria(categoria);
+
+        if (imagen != null && !imagen.isEmpty()) {
+            cambiarImagenPrincipal(disfraz, imagen);
+        }
+
+        disfrazRepository.save(disfraz);
+    }
+
+    @Transactional
+    public void desactivarDisfraz(Long id) {
+        Disfraz disfraz = disfrazRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("El disfraz no existe"));
+
+        disfraz.setActivo(false);
+        disfrazRepository.save(disfraz);
+    }
+
+    private void cambiarImagenPrincipal(Disfraz disfraz, MultipartFile imagen) {
+        String rutaImagen = archivoService.guardarImagen(imagen);
+
+        disfraz.getImagenes().clear();
+
+        ImagenDisfraz nuevaImagen = new ImagenDisfraz();
+        nuevaImagen.setUrlImagen(rutaImagen);
+        nuevaImagen.setPrincipal(true);
+        nuevaImagen.setDisfraz(disfraz);
+
+        disfraz.getImagenes().add(nuevaImagen);
     }
 }

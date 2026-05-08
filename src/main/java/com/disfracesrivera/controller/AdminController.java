@@ -86,4 +86,43 @@ public class AdminController {
         reservaService.finalizarReserva(id);
         return "redirect:/admin/reservas?finalizada";
     }
+
+    @GetMapping("/disfraces/{id}/editar")
+    public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
+        model.addAttribute("disfrazId", id);
+        model.addAttribute("disfrazRequest", disfrazService.obtenerRequestParaEditar(id));
+        model.addAttribute("categorias", categoriaRepository.findAll());
+        return "admin/editar-disfraz";
+    }
+
+    @PostMapping("/disfraces/{id}/editar")
+    public String actualizarDisfraz(
+            @PathVariable Long id,
+            @Valid @ModelAttribute("disfrazRequest") DisfrazRequest disfrazRequest,
+            BindingResult bindingResult,
+            @RequestParam(value = "imagen", required = false) MultipartFile imagen,
+            Model model
+    ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("disfrazId", id);
+            model.addAttribute("categorias", categoriaRepository.findAll());
+            return "admin/editar-disfraz";
+        }
+
+        try {
+            disfrazService.actualizarDisfraz(id, disfrazRequest, imagen);
+            return "redirect:/admin/disfraces?actualizado";
+        } catch (RuntimeException e) {
+            model.addAttribute("disfrazId", id);
+            model.addAttribute("categorias", categoriaRepository.findAll());
+            model.addAttribute("errorDisfraz", e.getMessage());
+            return "admin/editar-disfraz";
+        }
+    }
+
+    @PostMapping("/disfraces/{id}/desactivar")
+    public String desactivarDisfraz(@PathVariable Long id) {
+        disfrazService.desactivarDisfraz(id);
+        return "redirect:/admin/disfraces?desactivado";
+    }
 }

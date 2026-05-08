@@ -34,6 +34,9 @@ public class DisfrazRequest {
 
     private Boolean disponibleVenta = true;
 
+    public DisfrazRequest() {
+    }
+
     public String getNombre() {
         return nombre;
     }
