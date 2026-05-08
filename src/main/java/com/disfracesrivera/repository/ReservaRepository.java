@@ -15,6 +15,9 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
     @EntityGraph(attributePaths = {"disfraz", "disfraz.imagenes", "usuario"})
     List<Reserva> findByUsuarioId(Long usuarioId);
 
+    @EntityGraph(attributePaths = {"disfraz", "disfraz.imagenes", "usuario"})
+    List<Reserva> findAllByOrderByFechaCreacionDesc();
+
     List<Reserva> findByDisfrazId(Long disfrazId);
 
     List<Reserva> findByEstado(EstadoReserva estado);

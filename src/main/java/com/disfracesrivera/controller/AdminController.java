@@ -2,6 +2,7 @@ package com.disfracesrivera.controller;
 
 import com.disfracesrivera.dto.DisfrazRequest;
 import com.disfracesrivera.service.DisfrazService;
+import com.disfracesrivera.service.ReservaService;
 import com.disfracesrivera.repository.CategoriaRepository;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -15,13 +16,16 @@ import org.springframework.web.multipart.MultipartFile;
 public class AdminController {
 
     private final DisfrazService disfrazService;
+    private final ReservaService reservaService;
     private final CategoriaRepository categoriaRepository;
 
     public AdminController(
             DisfrazService disfrazService,
+            ReservaService reservaService,
             CategoriaRepository categoriaRepository
     ) {
         this.disfrazService = disfrazService;
+        this.reservaService = reservaService;
         this.categoriaRepository = categoriaRepository;
     }
 
@@ -63,5 +67,23 @@ public class AdminController {
             model.addAttribute("errorDisfraz", e.getMessage());
             return "admin/crear-disfraz";
         }
+    }
+
+    @GetMapping("/reservas")
+    public String listarReservas(Model model) {
+        model.addAttribute("reservas", reservaService.listarReservasAdmin());
+        return "admin/reservas";
+    }
+
+    @PostMapping("/reservas/{id}/cancelar")
+    public String cancelarReserva(@PathVariable Long id) {
+        reservaService.cancelarReserva(id);
+        return "redirect:/admin/reservas?cancelada";
+    }
+
+    @PostMapping("/reservas/{id}/finalizar")
+    public String finalizarReserva(@PathVariable Long id) {
+        reservaService.finalizarReserva(id);
+        return "redirect:/admin/reservas?finalizada";
     }
 }

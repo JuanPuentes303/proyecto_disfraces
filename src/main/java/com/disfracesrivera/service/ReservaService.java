@@ -1,5 +1,6 @@
 package com.disfracesrivera.service;
 
+import com.disfracesrivera.dto.ReservaAdminView;
 import com.disfracesrivera.dto.ReservaRequest;
 import com.disfracesrivera.dto.ReservaView;
 import com.disfracesrivera.model.Disfraz;
@@ -72,7 +73,6 @@ public class ReservaService {
         reserva.setObservaciones(request.getObservaciones());
 
         Reserva reservaGuardada = reservaRepository.save(reserva);
-
         emailService.enviarCorreoReservaAdmin(reservaGuardada);
     }
 
@@ -89,9 +89,78 @@ public class ReservaService {
                 .toList();
     }
 
+    @Transactional
+    public List<ReservaAdminView> listarReservasAdmin() {
+        actualizarReservasVencidas();
+
+        return reservaRepository.findAllByOrderByFechaCreacionDesc()
+                .stream()
+                .map(this::convertirAReservaAdminView)
+                .toList();
+    }
+
+    @Transactional
+    public void cancelarReserva(Long reservaId) {
+        Reserva reserva = reservaRepository.findById(reservaId)
+                .orElseThrow(() -> new IllegalArgumentException("La reserva no existe"));
+
+        if (reserva.getEstado() == EstadoReserva.VENCIDA || reserva.getEstado() == EstadoReserva.FINALIZADA) {
+            throw new IllegalArgumentException("No se puede cancelar una reserva vencida o finalizada");
+        }
+
+        reserva.setEstado(EstadoReserva.CANCELADA);
+        reservaRepository.save(reserva);
+    }
+
+    @Transactional
+    public void finalizarReserva(Long reservaId) {
+        Reserva reserva = reservaRepository.findById(reservaId)
+                .orElseThrow(() -> new IllegalArgumentException("La reserva no existe"));
+
+        if (reserva.getEstado() == EstadoReserva.CANCELADA) {
+            throw new IllegalArgumentException("No se puede finalizar una reserva cancelada");
+        }
+
+        reserva.setEstado(EstadoReserva.FINALIZADA);
+        reservaRepository.save(reserva);
+    }
+
     private ReservaView convertirAReservaView(Reserva reserva) {
         return new ReservaView(
                 reserva.getId(),
+                reserva.getDisfraz() != null ? reserva.getDisfraz().getNombre() : "Disfraz no disponible",
+                obtenerImagenDisfraz(reserva),
+                reserva.getTipo(),
+                reserva.getFechaInicio(),
+                reserva.getFechaFin(),
+                reserva.getEstado(),
+                reserva.getObservaciones()
+        );
+    }
+
+    private ReservaAdminView convertirAReservaAdminView(Reserva reserva) {
+        Usuario usuario = reserva.getUsuario();
+
+        String nombreCliente = "Cliente no disponible";
+        String correoCliente = "Sin correo";
+        String telefonoCliente = "Sin teléfono";
+
+        if (usuario != null) {
+            nombreCliente = usuario.getNombre();
+
+            if (usuario.getApellido() != null && !usuario.getApellido().isBlank()) {
+                nombreCliente += " " + usuario.getApellido();
+            }
+
+            correoCliente = usuario.getCorreo();
+            telefonoCliente = usuario.getTelefono() != null ? usuario.getTelefono() : "Sin teléfono";
+        }
+
+        return new ReservaAdminView(
+                reserva.getId(),
+                nombreCliente,
+                correoCliente,
+                telefonoCliente,
                 reserva.getDisfraz() != null ? reserva.getDisfraz().getNombre() : "Disfraz no disponible",
                 obtenerImagenDisfraz(reserva),
                 reserva.getTipo(),

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservas Admin - Disfraces Rivera</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="admin-page">
+    <section class="admin-header">
+        <div>
+            <h1>Reservas de clientes</h1>
+            <p>Consulta y gestiona las reservas realizadas en el sistema.</p>
+        </div>
+
+        <a href="/admin" class="btn btn-secondary">Volver al panel</a>
+    </section>
+
+    <div class="alert alert-success" th:if="${param.cancelada}">
+        Reserva cancelada correctamente.
+    </div>
+
+    <div class="alert alert-success" th:if="${param.finalizada}">
+        Reserva finalizada correctamente.
+    </div>
+
+    <section class="admin-table-wrapper">
+        <table class="admin-table">
+            <thead>
+            <tr>
+                <th>Imagen</th>
+                <th>Disfraz</th>
+                <th>Cliente</th>
+                <th>Contacto</th>
+                <th>Tipo</th>
+                <th>Fechas</th>
+                <th>Estado</th>
+                <th>Observaciones</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="reserva : ${reservas}">
+                <td>
+                    <img class="table-img"
+                         th:if="${reserva.imagenDisfrazUrl != null}"
+                         th:src="@{${reserva.imagenDisfrazUrl}}"
+                         alt="Imagen del disfraz">
+
+                    <span th:if="${reserva.imagenDisfrazUrl == null}">
+                        Sin imagen
+                    </span>
+                </td>
+
+                <td th:text="${reserva.nombreDisfraz}">Disfraz</td>
+
+                <td>
+                    <strong th:text="${reserva.nombreCliente}">Cliente</strong>
+                    <br>
+                    <small th:text="${reserva.correoCliente}">correo</small>
+                </td>
+
+                <td th:text="${reserva.telefonoCliente}">Teléfono</td>
+
+                <td th:text="${reserva.tipo}">Tipo</td>
+
+                <td>
+                    <span th:text="${reserva.fechaInicio}">Inicio</span>
+                    <br>
+                    <span th:text="${reserva.fechaFin}">Fin</span>
+                </td>
+
+                <td>
+                    <span class="status-pill" th:text="${reserva.estado}">Estado</span>
+                </td>
+
+                <td th:text="${reserva.observaciones != null ? reserva.observaciones : 'Sin observaciones'}">
+                    Observaciones
+                </td>
+
+                <td>
+                    <div class="table-actions">
+                        <form th:if="${reserva.estado.name() == 'ACTIVA'}"
+                              th:action="@{/admin/reservas/{id}/cancelar(id=${reserva.id})}"
+                              method="post">
+                            <button type="submit" class="btn-small btn-danger">
+                                Cancelar
+                            </button>
+                        </form>
+
+                        <form th:if="${reserva.estado.name() == 'ACTIVA'}"
+                              th:action="@{/admin/reservas/{id}/finalizar(id=${reserva.id})}"
+                              method="post">
+                            <button type="submit" class="btn-small btn-success">
+                                Finalizar
+                            </button>
+                        </form>
+
+                        <span th:if="${reserva.estado.name() != 'ACTIVA'}">
+                            Sin acciones
+                        </span>
+                    </div>
+                </td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(reservas)}">
+                <td colspan="9">Todavía no hay reservas registradas.</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>
