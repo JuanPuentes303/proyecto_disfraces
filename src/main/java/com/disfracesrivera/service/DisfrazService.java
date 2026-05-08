@@ -1,6 +1,7 @@
 package com.disfracesrivera.service;
 
 import com.disfracesrivera.dto.DisfrazDetalleView;
+import com.disfracesrivera.dto.DisfrazPublicView;
 import com.disfracesrivera.dto.DisfrazAdminView;
 import com.disfracesrivera.dto.DisfrazRequest;
 import com.disfracesrivera.model.Categoria;
@@ -223,6 +224,55 @@ public class DisfrazService {
                 disfraz.getPrecioCompra(),
                 disfraz.getDisponibleVenta(),
                 disfraz.getActivo(),
+                disfraz.getCategoria() != null ? disfraz.getCategoria().getNombre() : "Sin categoría",
+                obtenerImagenPrincipal(disfraz)
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public List<DisfrazPublicView> listarPublicoConFiltros(
+            String busqueda,
+            Long categoriaId,
+            String talla,
+            String genero,
+            BigDecimal precioMin,
+            BigDecimal precioMax
+    ) {
+        return disfrazRepository.buscarConFiltrosDetalle(
+                        limpiarTexto(busqueda),
+                        categoriaId,
+                        limpiarTexto(talla),
+                        limpiarTexto(genero),
+                        precioMin,
+                        precioMax
+                )
+                .stream()
+                .map(this::convertirAPublicView)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public DisfrazPublicView obtenerPublicoPorId(Long id) {
+        Disfraz disfraz = disfrazRepository.buscarDetallePorId(id)
+                .orElseThrow(() -> new IllegalArgumentException("El disfraz no existe"));
+
+        if (!Boolean.TRUE.equals(disfraz.getActivo())) {
+            throw new IllegalArgumentException("El disfraz no está disponible");
+        }
+
+        return convertirAPublicView(disfraz);
+    }
+
+    private DisfrazPublicView convertirAPublicView(Disfraz disfraz) {
+        return new DisfrazPublicView(
+                disfraz.getId(),
+                disfraz.getNombre(),
+                disfraz.getDescripcion(),
+                disfraz.getTalla(),
+                disfraz.getGenero(),
+                disfraz.getPrecioAlquiler(),
+                disfraz.getPrecioCompra(),
+                disfraz.getDisponibleVenta(),
                 disfraz.getCategoria() != null ? disfraz.getCategoria().getNombre() : "Sin categoría",
                 obtenerImagenPrincipal(disfraz)
         );

@@ -37,6 +37,28 @@ public interface DisfrazRepository extends JpaRepository<Disfraz, Long> {
             FROM Disfraz d
             LEFT JOIN FETCH d.imagenes
             LEFT JOIN FETCH d.categoria
+            WHERE d.activo = true
+            AND (:busqueda IS NULL OR :busqueda = '' OR LOWER(d.nombre) LIKE LOWER(CONCAT('%', :busqueda, '%')))
+            AND (:categoriaId IS NULL OR d.categoria.id = :categoriaId)
+            AND (:talla IS NULL OR :talla = '' OR d.talla = :talla)
+            AND (:genero IS NULL OR :genero = '' OR d.genero = :genero)
+            AND (:precioMin IS NULL OR d.precioAlquiler >= :precioMin)
+            AND (:precioMax IS NULL OR d.precioAlquiler <= :precioMax)
+            """)
+    List<Disfraz> buscarConFiltrosDetalle(
+            String busqueda,
+            Long categoriaId,
+            String talla,
+            String genero,
+            BigDecimal precioMin,
+            BigDecimal precioMax
+    );
+
+    @Query("""
+            SELECT DISTINCT d
+            FROM Disfraz d
+            LEFT JOIN FETCH d.imagenes
+            LEFT JOIN FETCH d.categoria
             WHERE d.id = :id
             """)
     Optional<Disfraz> buscarDetallePorId(Long id);
