@@ -16,11 +16,12 @@
     <section class="detail-grid">
         <div class="detail-image-card">
             <img th:if="${disfraz.imagenPrincipalUrl != null}"
-                 th:src="@{${disfraz.imagenPrincipalUrl}}"
-                 th:alt="${disfraz.nombre}">
+                th:src="@{${disfraz.imagenPrincipalUrl}}"
+                th:alt="${disfraz.nombre}">
 
             <div class="image-placeholder detail-placeholder"
-                 th:if="${disfraz.imagenPrincipalUrl == null}">
+                th:if="${disfraz.imagenPrincipalUrl == null}"
+                th:text="#{common.noImage}">
                 Sin imagen
             </div>
         </div>

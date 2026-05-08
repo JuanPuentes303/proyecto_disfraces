@@ -9,7 +9,6 @@ import com.disfracesrivera.model.Disfraz;
 import com.disfracesrivera.model.ImagenDisfraz;
 import com.disfracesrivera.repository.CategoriaRepository;
 import com.disfracesrivera.repository.DisfrazRepository;
-import com.disfracesrivera.repository.ImagenDisfrazRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,28 +22,32 @@ public class DisfrazService {
     private final DisfrazRepository disfrazRepository;
     private final CategoriaRepository categoriaRepository;
     private final ArchivoService archivoService;
-    private final ImagenDisfrazRepository imagenDisfrazRepository;
 
     public DisfrazService(
             DisfrazRepository disfrazRepository,
             CategoriaRepository categoriaRepository,
-            ArchivoService archivoService,
-            ImagenDisfrazRepository imagenDisfrazRepository
+            ArchivoService archivoService
     ) {
         this.disfrazRepository = disfrazRepository;
         this.categoriaRepository = categoriaRepository;
         this.archivoService = archivoService;
-        this.imagenDisfrazRepository = imagenDisfrazRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<Disfraz> listarActivos() {
-        return disfrazRepository.findByActivoTrue();
+        List<Disfraz> disfraces = disfrazRepository.findByActivoTrue();
+        disfraces.forEach(this::inicializarRelacionesBasicas);
+        return disfraces;
     }
 
+    @Transactional(readOnly = true)
     public List<Disfraz> obtenerAleatorios() {
-        return disfrazRepository.obtenerSeisAleatorios();
+        List<Disfraz> disfraces = disfrazRepository.obtenerSeisAleatorios();
+        disfraces.forEach(this::inicializarRelacionesBasicas);
+        return disfraces;
     }
 
+    @Transactional(readOnly = true)
     public List<Disfraz> buscarDisfraces(
             String busqueda,
             Long categoriaId,
@@ -53,7 +56,7 @@ public class DisfrazService {
             BigDecimal precioMin,
             BigDecimal precioMax
     ) {
-        return disfrazRepository.buscarConFiltros(
+        List<Disfraz> disfraces = disfrazRepository.buscarConFiltrosDetalle(
                 limpiarTexto(busqueda),
                 categoriaId,
                 limpiarTexto(talla),
@@ -61,6 +64,19 @@ public class DisfrazService {
                 precioMin,
                 precioMax
         );
+
+        disfraces.forEach(this::inicializarRelacionesBasicas);
+        return disfraces;
+    }
+
+    private void inicializarRelacionesBasicas(Disfraz disfraz) {
+        if (disfraz.getImagenes() != null) {
+            disfraz.getImagenes().size();
+        }
+
+        if (disfraz.getCategoria() != null) {
+            disfraz.getCategoria().getNombre();
+        }
     }
 
     private String limpiarTexto(String valor) {
@@ -71,6 +87,7 @@ public class DisfrazService {
         return valor.trim();
     }
 
+    @Transactional
     public void crearDisfraz(DisfrazRequest request, MultipartFile imagen) {
         Categoria categoria = categoriaRepository.findById(request.getCategoriaId())
                 .orElseThrow(() -> new IllegalArgumentException("La categoría seleccionada no existe"));

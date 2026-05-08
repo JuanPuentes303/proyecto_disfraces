@@ -39,7 +39,7 @@ FLUSH PRIVILEGES;
 
 ### 2. Variables de entorno
 
-Copia `application.properties.example` a `application.properties` y ajusta los valores, o define las siguientes variables de entorno antes de ejecutar la aplicación:
+Copia `src/main/resources/application.properties.example` a `src/main/resources/application.properties` y ajusta los valores, o define las siguientes variables de entorno antes de ejecutar la aplicación:
 
 | Variable            | Descripción                                     |
 |---------------------|-------------------------------------------------|
@@ -101,18 +101,18 @@ docs/
 
 ### Catálogo público
 - Listado de disfraces con filtros por categoría, talla y género
-- Vista de detalle con galería de imágenes
+- Vista de detalle con imagen principal
 - Disponibilidad en tiempo real
 
 ### Reservas
 - Usuarios registrados pueden alquilar o comprar disfraces
 - Validación de fechas y disponibilidad
-- Notificación por correo electrónico al usuario y al administrador
+- Notificación por correo electrónico al administrador
 - Seguimiento del estado: `ACTIVA`, `FINALIZADA`, `CANCELADA`, `VENCIDA`
 
 ### Panel de administración
-- CRUD completo de disfraces y categorías
-- Gestión de imágenes (carga y eliminación)
+- Gestión de disfraces y uso de categorías precargadas
+- Gestión de imagen principal de cada disfraz
 - Visualización y gestión de todas las reservas
 - Acceso restringido a usuarios con `ROLE_ADMIN`
 
@@ -126,17 +126,22 @@ docs/
 
 Base URL: `/api`
 
-| Método | Endpoint                      | Descripción                          | Auth requerida |
-|--------|-------------------------------|--------------------------------------|----------------|
-| POST   | `/api/auth/login`             | Obtener token JWT                    | No             |
-| GET    | `/api/disfraces`              | Listar disfraces públicos            | No             |
-| GET    | `/api/disfraces/{id}`         | Detalle de un disfraz                | No             |
-| POST   | `/api/reservas`               | Crear una reserva                    | JWT            |
-| GET    | `/api/reservas/mis-reservas`  | Reservas del usuario autenticado     | JWT            |
-| POST   | `/api/admin/disfraces`        | Crear disfraz                        | JWT (ADMIN)    |
-| PUT    | `/api/admin/disfraces/{id}`   | Editar disfraz                       | JWT (ADMIN)    |
-| DELETE | `/api/admin/disfraces/{id}`   | Eliminar disfraz                     | JWT (ADMIN)    |
-| PATCH  | `/api/admin/reservas/{id}/estado` | Cambiar estado de reserva        | JWT (ADMIN)    |
+| Método | Endpoint                                  | Descripción                          | Auth requerida |
+|--------|-------------------------------------------|--------------------------------------|----------------|
+| POST   | `/api/auth/login`                         | Obtener token JWT                    | No             |
+| GET    | `/api/disfraces`                          | Listar disfraces públicos            | No             |
+| GET    | `/api/disfraces/{id}`                     | Detalle de un disfraz                | No             |
+| GET    | `/api/usuario/perfil`                     | Ver perfil del usuario autenticado   | JWT            |
+| GET    | `/api/reservas/mis-reservas`              | Reservas del usuario autenticado     | JWT            |
+| POST   | `/api/reservas/disfraz/{disfrazId}`       | Crear una reserva                    | JWT            |
+| GET    | `/api/reservas/disfraz/{id}/disponibilidad` | Consultar disponibilidad          | JWT            |
+| GET    | `/api/admin/reservas`                     | Listar reservas admin                | JWT (ADMIN)    |
+| POST   | `/api/admin/reservas/{id}/cancelar`       | Cancelar reserva                     | JWT (ADMIN)    |
+| POST   | `/api/admin/reservas/{id}/finalizar`      | Finalizar reserva                    | JWT (ADMIN)    |
+| GET    | `/api/admin/disfraces`                    | Listar disfraces admin               | JWT (ADMIN)    |
+| POST   | `/api/admin/disfraces`                    | Crear disfraz                        | JWT (ADMIN)    |
+| PUT    | `/api/admin/disfraces/{id}`               | Editar disfraz                       | JWT (ADMIN)    |
+| POST   | `/api/admin/disfraces/{id}/desactivar`    | Desactivar disfraz                   | JWT (ADMIN)    |
 
 Para más detalle consulta [`docs/endpoints.md`](docs/endpoints.md).
 

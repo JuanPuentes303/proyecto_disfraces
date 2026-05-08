@@ -109,11 +109,11 @@
         <div class="costume-grid">
             <article class="costume-card" th:each="disfraz : ${aleatorios}">
                 <div class="costume-image">
-                    <img th:if="${!disfraz.imagenes.isEmpty()}"
+                    <img th:if="${disfraz.imagenes != null and !#lists.isEmpty(disfraz.imagenes)}"
                          th:src="@{${disfraz.imagenes[0].urlImagen}}"
                          th:alt="${disfraz.nombre}">
 
-                    <div class="image-placeholder" th:if="${disfraz.imagenes.isEmpty()}">
+                    <div class="image-placeholder" th:if="${disfraz.imagenes == null or #lists.isEmpty(disfraz.imagenes)}">
                         Sin imagen
                     </div>
                 </div>
@@ -168,11 +168,11 @@
         <div class="costume-grid" th:if="${!#lists.isEmpty(disfraces)}">
             <article class="costume-card" th:each="disfraz : ${disfraces}">
                 <div class="costume-image">
-                    <img th:if="${!disfraz.imagenes.isEmpty()}"
+                    <img th:if="${disfraz.imagenes != null and !#lists.isEmpty(disfraz.imagenes)}"
                          th:src="@{${disfraz.imagenes[0].urlImagen}}"
                          th:alt="${disfraz.nombre}">
 
-                    <div class="image-placeholder" th:if="${disfraz.imagenes.isEmpty()}">
+                    <div class="image-placeholder" th:if="${disfraz.imagenes == null or #lists.isEmpty(disfraz.imagenes)}">
                         Sin imagen
                     </div>
                 </div>

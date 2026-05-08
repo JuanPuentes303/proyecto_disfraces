@@ -12,7 +12,7 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
 
-    @Value("${app.admin.email}")
+    @Value("${app.admin.email:}")
     private String adminEmail;
 
     public EmailService(JavaMailSender mailSender) {
@@ -20,16 +20,20 @@ public class EmailService {
     }
 
     public void enviarCorreoReservaAdmin(Reserva reserva) {
+        if (adminEmail == null || adminEmail.isBlank()) {
+            System.out.println("Correo admin no configurado. Se omite envío de correo de reserva.");
+            return;
+        }
+
         try {
             SimpleMailMessage mensaje = new SimpleMailMessage();
 
             mensaje.setTo(adminEmail);
             mensaje.setSubject("Nueva reserva en Disfraces Rivera");
-
             mensaje.setText(construirMensajeReserva(reserva));
 
             mailSender.send(mensaje);
-        } catch (MailException e) {
+        } catch (MailException | IllegalArgumentException e) {
             System.err.println("No se pudo enviar el correo de reserva: " + e.getMessage());
         }
     }
@@ -78,7 +82,9 @@ public class EmailService {
                 reserva.getUsuario().getCorreo(),
                 telefono,
                 reserva.getDisfraz().getNombre(),
-                reserva.getDisfraz().getCategoria() != null ? reserva.getDisfraz().getCategoria().getNombre() : "Sin categoría",
+                reserva.getDisfraz().getCategoria() != null
+                        ? reserva.getDisfraz().getCategoria().getNombre()
+                        : "Sin categoría",
                 reserva.getDisfraz().getTalla(),
                 reserva.getDisfraz().getGenero(),
                 reserva.getTipo(),

@@ -10,11 +10,21 @@ import java.util.Optional;
 
 public interface DisfrazRepository extends JpaRepository<Disfraz, Long> {
 
+    @Query("""
+            SELECT DISTINCT d
+            FROM Disfraz d
+            LEFT JOIN FETCH d.imagenes
+            LEFT JOIN FETCH d.categoria
+            WHERE d.activo = true
+            ORDER BY d.fechaCreacion DESC
+            """)
     List<Disfraz> findByActivoTrue();
 
     @Query("""
-            SELECT d
+            SELECT DISTINCT d
             FROM Disfraz d
+            LEFT JOIN FETCH d.imagenes
+            LEFT JOIN FETCH d.categoria
             WHERE d.activo = true
             AND (:busqueda IS NULL OR :busqueda = '' OR LOWER(d.nombre) LIKE LOWER(CONCAT('%', :busqueda, '%')))
             AND (:categoriaId IS NULL OR d.categoria.id = :categoriaId)
