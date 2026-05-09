@@ -12,6 +12,8 @@ Sistema web para la gestión, alquiler y venta de disfraces. Desarrollado con **
 - **MySQL 8+** — base de datos relacional
 - **JWT (JJWT 0.12)** — autenticación stateless para la API
 - **Maven** — gestión de dependencias y build
+- Spring OAuth2 Client
+- Google OAuth2 Login
 
 ---
 
@@ -119,6 +121,13 @@ docs/
 ### Autenticación
 - Registro e inicio de sesión web (formularios Thymeleaf + Spring Security)
 - API REST con autenticación JWT para integración con clientes externos
+
+## Login con Google OAuth2
+
+El sistema permite iniciar sesión con Google usando OAuth2. Para usar esta función se debe crear un cliente OAuth en Google Cloud Console y configurar como redirect URI:
+
+```text
+http://localhost:8080/login/oauth2/code/google
 
 ---
 

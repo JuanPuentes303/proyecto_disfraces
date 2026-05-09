@@ -43,6 +43,14 @@
             <button type="submit" class="btn btn-primary btn-full" th:text="#{auth.login.button}">Entrar</button>
         </form>
 
+        <div class="oauth-divider">
+            <span>o</span>
+        </div>
+
+        <a th:href="@{/oauth2/authorization/google}" class="btn btn-google btn-full">
+            Entrar con Google
+        </a>
+
         <p class="auth-link">
             <span th:text="#{auth.login.noAccount}">¿No tienes cuenta?</span>
             <a href="/registro" th:text="#{auth.login.create}">Crear cuenta</a>

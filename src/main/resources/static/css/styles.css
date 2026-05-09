@@ -1424,3 +1424,35 @@ a {
         padding: 32px 24px;
     }
 }
+
+.oauth-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 22px 0;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.oauth-divider::before,
+.oauth-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--parchment);
+}
+
+.btn-google {
+    background: var(--white);
+    color: var(--mocha);
+    border: 1.5px solid var(--parchment);
+    box-shadow: 0 4px 18px rgba(26, 10, 2, 0.08);
+}
+
+.btn-google:hover {
+    background: #fffaf4;
+    border-color: var(--amber);
+}
