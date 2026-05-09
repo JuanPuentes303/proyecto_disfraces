@@ -16,12 +16,11 @@
     <section class="detail-grid">
         <div class="detail-image-card">
             <img th:if="${disfraz.imagenPrincipalUrl != null}"
-                th:src="@{${disfraz.imagenPrincipalUrl}}"
-                th:alt="${disfraz.nombre}">
+                 th:src="@{${disfraz.imagenPrincipalUrl}}"
+                 th:alt="${disfraz.nombre}">
 
             <div class="image-placeholder detail-placeholder"
-                th:if="${disfraz.imagenPrincipalUrl == null}"
-                th:text="#{common.noImage}">
+                 th:if="${disfraz.imagenPrincipalUrl == null}">
                 Sin imagen
             </div>
         </div>
@@ -35,52 +34,52 @@
             <h1 th:text="${disfraz.nombre}">Nombre disfraz</h1>
 
             <p class="detail-description"
-               th:text="${disfraz.descripcion != null && !disfraz.descripcion.isEmpty() ? disfraz.descripcion : 'Sin descripción'}">
+               th:text="${disfraz.descripcion != null && !disfraz.descripcion.isEmpty() ? disfraz.descripcion : #messages.msg('catalog.noDescription')}">
                 Descripción
             </p>
 
             <div class="detail-meta">
                 <div>
-                    <strong>Talla</strong>
+                    <strong th:text="#{detail.size}">Talla</strong>
                     <span th:text="${disfraz.talla}">Talla</span>
                 </div>
 
                 <div>
-                    <strong>Género</strong>
+                    <strong th:text="#{detail.gender}">Género</strong>
                     <span th:text="${disfraz.genero}">Género</span>
                 </div>
 
                 <div>
-                    <strong>Alquiler</strong>
+                    <strong th:text="#{detail.rental}">Alquiler</strong>
                     <span th:text="'$' + ${disfraz.precioAlquiler}">$0</span>
                 </div>
 
                 <div th:if="${disfraz.precioCompra != null}">
-                    <strong>Compra</strong>
+                    <strong th:text="#{detail.purchase}">Compra</strong>
                     <span th:text="'$' + ${disfraz.precioCompra}">$0</span>
                 </div>
             </div>
 
-            <a href="/catalogo" class="btn btn-secondary">Volver al catálogo</a>
+            <a href="/catalogo" class="btn btn-secondary" th:text="#{detail.backCatalog}">Volver al catálogo</a>
         </div>
     </section>
 
     <section class="reservation-section">
         <div class="section-title">
-            <h2>Reservar este disfraz</h2>
-            <p>Selecciona el tipo de reserva y las fechas en las que necesitas el disfraz.</p>
+            <h2 th:text="#{detail.reserveTitle}">Reservar este disfraz</h2>
+            <p th:text="#{detail.reserveSubtitle}">Selecciona el tipo de reserva y las fechas en las que necesitas el disfraz.</p>
         </div>
 
         <div class="availability-card">
-    <h3>Consultar disponibilidad</h3>
-    <p>Antes de reservar, verifica si el disfraz está libre para las fechas que necesitas.</p>
+    <h3 th:text="#{detail.checkAvailability}">Consultar disponibilidad</h3>
+    <p th:text="#{detail.checkAvailabilityText}">Antes de reservar, verifica si el disfraz está libre para las fechas que necesitas.</p>
 
     <form th:action="@{/disfraces/{id}/disponibilidad(id=${disfraz.id})}"
           method="get"
           class="availability-form">
 
         <div class="form-group">
-            <label for="fechaInicioConsulta">Fecha inicio</label>
+            <label for="fechaInicioConsulta" th:text="#{detail.startDate}">Fecha inicio</label>
             <input type="date"
                    id="fechaInicioConsulta"
                    name="fechaInicio"
@@ -88,14 +87,14 @@
         </div>
 
         <div class="form-group">
-            <label for="fechaFinConsulta">Fecha fin</label>
+            <label for="fechaFinConsulta" th:text="#{detail.endDate}">Fecha fin</label>
             <input type="date"
                    id="fechaFinConsulta"
                    name="fechaFin"
                    th:value="${fechaFinConsulta}">
         </div>
 
-        <button type="submit" class="btn btn-secondary">
+        <button type="submit" class="btn btn-secondary" th:text="#{detail.verify}">
             Verificar
         </button>
     </form>
@@ -119,14 +118,14 @@
         <div class="alert alert-error" th:if="${errorReserva}" th:text="${errorReserva}"></div>
 
         <div sec:authorize="!isAuthenticated()" class="auth-card reservation-login-card">
-            <h3>Debes iniciar sesión para reservar</h3>
-            <p class="auth-subtitle">
+            <h3 th:text="#{detail.loginRequired}">Debes iniciar sesión para reservar</h3>
+            <p class="auth-subtitle" th:text="#{detail.loginRequiredText}">
                 Crea una cuenta o inicia sesión para apartar este disfraz.
             </p>
 
             <div class="hero__actions">
-                <a href="/login" class="btn btn-primary">Iniciar sesión</a>
-                <a href="/registro" class="btn btn-secondary">Crear cuenta</a>
+                <a href="/login" class="btn btn-primary" th:text="#{nav.login}">Iniciar sesión</a>
+                <a href="/registro" class="btn btn-secondary" th:text="#{nav.register}">Crear cuenta</a>
             </div>
         </div>
 
@@ -138,9 +137,9 @@
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="tipo">Tipo de reserva *</label>
+                    <label for="tipo" th:text="#{detail.type}">Tipo de reserva *</label>
                     <select id="tipo" th:field="*{tipo}">
-                        <option value="">Seleccione</option>
+                        <option value="" th:text="#{admin.form.select}">Seleccione</option>
                         <option th:each="tipoReserva : ${tiposReserva}"
                                 th:value="${tipoReserva}"
                                 th:text="${tipoReserva}">
@@ -150,7 +149,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="fechaInicio">Fecha inicio *</label>
+                    <label for="fechaInicio" th:text="#{detail.startDate}">Fecha inicio *</label>
                     <input type="date" id="fechaInicio" th:field="*{fechaInicio}">
                     <small class="field-error" th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}"></small>
                 </div>
@@ -158,20 +157,20 @@
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="fechaFin">Fecha fin *</label>
+                    <label for="fechaFin" th:text="#{detail.endDate}">Fecha fin *</label>
                     <input type="date" id="fechaFin" th:field="*{fechaFin}">
                     <small class="field-error" th:if="${#fields.hasErrors('fechaFin')}" th:errors="*{fechaFin}"></small>
                 </div>
 
                 <div class="form-group">
-                    <label for="observaciones">Observaciones</label>
+                    <label for="observaciones" th:text="#{detail.observations}">Observaciones</label>
                     <input type="text" id="observaciones" th:field="*{observaciones}"
-                           placeholder="Ej: Lo necesito para una fiesta escolar">
+                           th:placeholder="#{detail.observations}">
                     <small class="field-error" th:if="${#fields.hasErrors('observaciones')}" th:errors="*{observaciones}"></small>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-full">
+            <button type="submit" class="btn btn-primary btn-full" th:text="#{detail.confirmReservation}">
                 Confirmar reserva
             </button>
         </form>

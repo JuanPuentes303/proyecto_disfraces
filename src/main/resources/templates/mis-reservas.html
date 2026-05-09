@@ -14,28 +14,28 @@
 <main class="admin-page">
     <section class="admin-header">
         <div>
-            <h1>Mis reservas</h1>
-            <p>Consulta los disfraces que has reservado.</p>
+            <h1 th:text="#{reservations.my.title}">Mis reservas</h1>
+            <p th:text="#{reservations.my.subtitle}">Consulta los disfraces que has reservado.</p>
         </div>
 
-        <a href="/catalogo" class="btn btn-primary">Ver catálogo</a>
+        <a href="/catalogo" class="btn btn-primary" th:text="#{reservations.catalog}">Ver catálogo</a>
     </section>
 
     <div class="alert alert-success" th:if="${param.creada}">
-        Reserva creada correctamente.
+        <span th:text="#{reservations.created}">Reserva creada correctamente.</span>
     </div>
 
     <section class="admin-table-wrapper">
         <table class="admin-table">
             <thead>
             <tr>
-                <th>Imagen</th>
-                <th>Disfraz</th>
-                <th>Tipo</th>
-                <th>Fecha inicio</th>
-                <th>Fecha fin</th>
-                <th>Estado</th>
-                <th>Observaciones</th>
+                <th th:text="#{admin.table.image}">Imagen</th>
+                <th th:text="#{admin.costumes}">Disfraz</th>
+                <th th:text="#{admin.table.type}">Tipo</th>
+                <th th:text="#{detail.startDate}">Fecha inicio</th>
+                <th th:text="#{detail.endDate}">Fecha fin</th>
+                <th th:text="#{admin.table.status}">Estado</th>
+                <th th:text="#{admin.table.observations}">Observaciones</th>
             </tr>
             </thead>
 
@@ -47,7 +47,7 @@
                          th:src="@{${reserva.imagenDisfrazUrl}}"
                          alt="Imagen del disfraz">
 
-                    <span th:if="${reserva.imagenDisfrazUrl == null}">
+                    <span th:if="${reserva.imagenDisfrazUrl == null}" th:text="#{common.noImage}">
                         Sin imagen
                     </span>
                 </td>
@@ -65,7 +65,7 @@
             </tr>
 
             <tr th:if="${#lists.isEmpty(reservas)}">
-                <td colspan="7">Todavía no tienes reservas.</td>
+                <td colspan="7" th:text="#{reservations.empty}">Todavía no tienes reservas.</td>
             </tr>
             </tbody>
         </table>

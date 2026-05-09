@@ -14,34 +14,34 @@
 <main class="admin-page">
     <section class="admin-header">
         <div>
-            <h1>Reservas de clientes</h1>
-            <p>Consulta y gestiona las reservas realizadas en el sistema.</p>
+            <h1 th:text="#{admin.reservations.title}">Reservas de clientes</h1>
+            <p th:text="#{admin.reservations.subtitle}">Consulta y gestiona las reservas realizadas en el sistema.</p>
         </div>
 
-        <a href="/admin" class="btn btn-secondary">Volver al panel</a>
+        <a href="/admin" class="btn btn-secondary" th:text="#{admin.backPanel}">Volver al panel</a>
     </section>
 
     <div class="alert alert-success" th:if="${param.cancelada}">
-        Reserva cancelada correctamente.
+        <span th:text="#{admin.reservations.cancelled}">Reserva cancelada correctamente.</span>
     </div>
 
     <div class="alert alert-success" th:if="${param.finalizada}">
-        Reserva finalizada correctamente.
+        <span th:text="#{admin.reservations.finished}">Reserva finalizada correctamente.</span>
     </div>
 
     <section class="admin-table-wrapper">
         <table class="admin-table">
             <thead>
             <tr>
-                <th>Imagen</th>
-                <th>Disfraz</th>
-                <th>Cliente</th>
-                <th>Contacto</th>
-                <th>Tipo</th>
-                <th>Fechas</th>
-                <th>Estado</th>
-                <th>Observaciones</th>
-                <th>Acciones</th>
+                <th th:text="#{admin.table.image}">Imagen</th>
+                <th th:text="#{admin.costumes}">Disfraz</th>
+                <th th:text="#{admin.table.customer}">Cliente</th>
+                <th th:text="#{admin.table.contact}">Contacto</th>
+                <th th:text="#{admin.table.type}">Tipo</th>
+                <th th:text="#{admin.table.dates}">Fechas</th>
+                <th th:text="#{admin.table.status}">Estado</th>
+                <th th:text="#{admin.table.observations}">Observaciones</th>
+                <th th:text="#{admin.table.actions}">Acciones</th>
             </tr>
             </thead>
 
@@ -53,7 +53,7 @@
                          th:src="@{${reserva.imagenDisfrazUrl}}"
                          alt="Imagen del disfraz">
 
-                    <span th:if="${reserva.imagenDisfrazUrl == null}">
+                    <span th:if="${reserva.imagenDisfrazUrl == null}" th:text="#{common.noImage}">
                         Sin imagen
                     </span>
                 </td>
@@ -89,7 +89,7 @@
                         <form th:if="${reserva.estado.name() == 'ACTIVA'}"
                               th:action="@{/admin/reservas/{id}/cancelar(id=${reserva.id})}"
                               method="post">
-                            <button type="submit" class="btn-small btn-danger">
+                            <button type="submit" class="btn-small btn-danger" th:text="#{admin.actions.cancel}">
                                 Cancelar
                             </button>
                         </form>
@@ -97,12 +97,12 @@
                         <form th:if="${reserva.estado.name() == 'ACTIVA'}"
                               th:action="@{/admin/reservas/{id}/finalizar(id=${reserva.id})}"
                               method="post">
-                            <button type="submit" class="btn-small btn-success">
+                            <button type="submit" class="btn-small btn-success" th:text="#{admin.actions.finish}">
                                 Finalizar
                             </button>
                         </form>
 
-                        <span th:if="${reserva.estado.name() != 'ACTIVA'}">
+                        <span th:if="${reserva.estado.name() != 'ACTIVA'}" th:text="#{admin.actions.noActions}">
                             Sin acciones
                         </span>
                     </div>
@@ -110,7 +110,7 @@
             </tr>
 
             <tr th:if="${#lists.isEmpty(reservas)}">
-                <td colspan="9">Todavía no hay reservas registradas.</td>
+                <td colspan="9" th:text="#{admin.reservations.empty}">Todavía no hay reservas registradas.</td>
             </tr>
             </tbody>
         </table>

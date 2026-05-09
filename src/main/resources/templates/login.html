@@ -13,39 +13,39 @@
 
 <main class="auth-page">
     <section class="auth-card">
-        <h1>Iniciar sesión</h1>
-        <p class="auth-subtitle">Ingresa para reservar y revisar tus disfraces.</p>
+        <h1 th:text="#{auth.login.title}">Iniciar sesión</h1>
+        <p class="auth-subtitle" th:text="#{auth.login.subtitle}">Ingresa para reservar y revisar tus disfraces.</p>
 
         <div class="alert alert-success" th:if="${param.registroExitoso}">
-            Registro exitoso. Ahora puedes iniciar sesión.
+            <span th:text="#{auth.login.successRegister}">Registro exitoso. Ahora puedes iniciar sesión.</span>
         </div>
 
         <div class="alert alert-error" th:if="${param.error}">
-            Correo o contraseña incorrectos.
+            <span th:text="#{auth.login.error}">Correo o contraseña incorrectos.</span>
         </div>
 
         <div class="alert alert-success" th:if="${param.logout}">
-            Cerraste sesión correctamente.
+            <span th:text="#{auth.login.logout}">Cerraste sesión correctamente.</span>
         </div>
 
         <form th:action="@{/login}" method="post" class="auth-form">
 
             <div class="form-group">
-                <label for="username">Correo</label>
-                <input type="email" id="username" name="username" placeholder="ejemplo@correo.com" required>
+                <label for="username" th:text="#{auth.login.email}">Correo</label>
+                <input type="email" id="username" name="username" th:placeholder="#{auth.register.placeholder.email}" required>
             </div>
 
             <div class="form-group">
-                <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" placeholder="Tu contraseña" required>
+                <label for="password" th:text="#{auth.login.password}">Contraseña</label>
+                <input type="password" id="password" name="password" th:placeholder="#{auth.login.password}" required>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-full">Entrar</button>
+            <button type="submit" class="btn btn-primary btn-full" th:text="#{auth.login.button}">Entrar</button>
         </form>
 
         <p class="auth-link">
-            ¿No tienes cuenta?
-            <a href="/registro">Crear cuenta</a>
+            <span th:text="#{auth.login.noAccount}">¿No tienes cuenta?</span>
+            <a href="/registro" th:text="#{auth.login.create}">Crear cuenta</a>
         </p>
     </section>
 </main>

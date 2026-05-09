@@ -13,25 +13,25 @@
 <main class="admin-page">
     <section class="admin-header">
         <div>
-            <h1>Panel administrador</h1>
-            <p>Gestiona disfraces, fotos, precios y reservas.</p>
+            <h1 th:text="#{admin.title}">Panel administrador</h1>
+            <p th:text="#{admin.subtitle}">Gestiona disfraces, fotos, precios y reservas.</p>
         </div>
     </section>
 
     <section class="admin-grid">
         <a href="/admin/disfraces" class="admin-card">
-            <h2>Disfraces</h2>
-            <p>Crear, listar y administrar disfraces.</p>
+            <h2 th:text="#{admin.costumes}">Disfraces</h2>
+            <p th:text="#{admin.costumesText}">Crear, listar y administrar disfraces.</p>
         </a>
 
         <a href="/admin/disfraces/nuevo" class="admin-card">
-            <h2>Subir nuevo disfraz</h2>
-            <p>Agrega fotos, tallas, categorías y precios.</p>
+            <h2 th:text="#{admin.newCostume}">Subir nuevo disfraz</h2>
+            <p th:text="#{admin.newCostumeText}">Agrega fotos, tallas, categorías y precios.</p>
         </a>
 
         <a href="/admin/reservas" class="admin-card">
-            <h2>Reservas</h2>
-            <p>Revisa las reservas realizadas por los clientes.</p>
+            <h2 th:text="#{admin.reservations}">Reservas</h2>
+            <p th:text="#{admin.reservationsText}">Revisa las reservas realizadas por los clientes.</p>
         </a>
     </section>
 </main>

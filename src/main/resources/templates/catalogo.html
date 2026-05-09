@@ -15,7 +15,7 @@
 
     <section class="catalog-hero">
         <div>
-            <span class="hero__tag">Catálogo</span>
+            <span class="hero__tag" th:text="#{catalog.hero.tag}">Catálogo</span>
             <h1 th:text="#{catalog.title}">Encuentra tu disfraz ideal</h1>
             <p th:text="#{catalog.subtitle}">
                 Busca por nombre o categoría y revisa disponibilidad para tus fechas. ¡Reserva fácil y rápido!
@@ -31,13 +31,13 @@
                     id="busqueda"
                     name="busqueda"
                     th:value="${busqueda}"
-                    placeholder="Ej: vampiro, princesa, payaso...">
+                    th:placeholder="#{catalog.search}">
             </div>
 
             <div class="form-group">
                 <label for="categoriaId" th:text="#{catalog.category}">Categoría</label>
                 <select id="categoriaId" name="categoriaId">
-                    <option value="">Todas</option>
+                    <option value="" th:text="#{catalog.allCategories}">Todas</option>
                     <option th:each="categoria : ${categorias}"
                             th:value="${categoria.id}"
                             th:text="${categoria.nombre}"
@@ -49,7 +49,7 @@
             <div class="form-group">
                 <label for="talla" th:text="#{catalog.size}">Talla</label>
                 <select id="talla" name="talla">
-                    <option value="">Todas</option>
+                    <option value="" th:text="#{catalog.allCategories}">Todas</option>
                     <option value="XS" th:selected="${tallaSeleccionada == 'XS'}">XS</option>
                     <option value="S" th:selected="${tallaSeleccionada == 'S'}">S</option>
                     <option value="M" th:selected="${tallaSeleccionada == 'M'}">M</option>
@@ -63,7 +63,7 @@
             <div class="form-group">
                 <label for="genero" th:text="#{catalog.gender}">Género</label>
                 <select id="genero" name="genero">
-                    <option value="">Todos</option>
+                    <option value="" th:text="#{catalog.allGenders}">Todos</option>
                     <option value="Femenino" th:selected="${generoSeleccionado == 'Femenino'}">Femenino</option>
                     <option value="Masculino" th:selected="${generoSeleccionado == 'Masculino'}">Masculino</option>
                     <option value="Unisex" th:selected="${generoSeleccionado == 'Unisex'}">Unisex</option>
@@ -79,7 +79,7 @@
                     min="0"
                     step="1000"
                     th:value="${precioMin}"
-                    placeholder="Ej: 20000">
+                    placeholder="20000">
             </div>
 
             <div class="form-group">
@@ -90,7 +90,7 @@
                     min="0"
                     step="1000"
                     th:value="${precioMax}"
-                    placeholder="Ej: 80000">
+                    placeholder="80000">
             </div>
 
             <div class="filter-actions">
@@ -102,8 +102,8 @@
 
     <section class="catalog-section" th:if="${!#lists.isEmpty(aleatorios)}">
         <div class="section-title">
-            <h2>Disfraces destacados</h2>
-            <p>Una selección aleatoria de disfraces subidos por el administrador.</p>
+            <h2 th:text="#{catalog.featured}">Disfraces destacados</h2>
+            <p th:text="#{catalog.featuredText}">Una selección aleatoria de disfraces subidos por el administrador.</p>
         </div>
 
         <div class="costume-grid">
@@ -114,30 +114,30 @@
                          th:alt="${disfraz.nombre}">
 
                     <div class="image-placeholder" th:if="${disfraz.imagenes == null or #lists.isEmpty(disfraz.imagenes)}">
-                        Sin imagen
+                        <span th:text="#{catalog.noImage}">Sin imagen</span>
                     </div>
                 </div>
 
                 <div class="costume-content">
                     <span class="costume-category"
-                          th:text="${disfraz.categoria != null ? disfraz.categoria.nombre : 'Sin categoría'}">
+                          th:text="${disfraz.categoria != null ? disfraz.categoria.nombre : #messages.msg('common.noCategory')}">
                     </span>
 
                     <h3 th:text="${disfraz.nombre}">Nombre disfraz</h3>
 
                     <p class="costume-description"
-                       th:text="${disfraz.descripcion != null && !disfraz.descripcion.isEmpty() ? disfraz.descripcion : 'Sin descripción'}">
+                       th:text="${disfraz.descripcion != null && !disfraz.descripcion.isEmpty() ? disfraz.descripcion : #messages.msg('catalog.noDescription')}">
                     </p>
 
                     <div class="costume-meta">
-                        <span th:text="'Talla: ' + ${disfraz.talla}"></span>
+                        <span th:text="#{catalog.sizePrefix} + ': ' + ${disfraz.talla}"></span>
                         <span th:text="${disfraz.genero}"></span>
                     </div>
 
                     <div class="costume-price">
-                        <strong th:text="'Alquiler: $' + ${disfraz.precioAlquiler}"></strong>
+                        <strong th:text="#{catalog.rental} + ': $' + ${disfraz.precioAlquiler}"></strong>
                         <small th:if="${disfraz.precioCompra != null}"
-                               th:text="'Compra: $' + ${disfraz.precioCompra}">
+                               th:text="#{catalog.purchase} + ': $' + ${disfraz.precioCompra}">
                         </small>
                     </div>
 
@@ -151,18 +151,18 @@
 
     <section class="catalog-section">
         <div class="section-title">
-            <h2 th:if="${busqueda == null || busqueda.isEmpty()}">Todos los disfraces</h2>
-            <h2 th:if="${busqueda != null && !busqueda.isEmpty()}">Resultados relacionados</h2>
+            <h2 th:if="${busqueda == null || busqueda.isEmpty()}" th:text="#{catalog.all}">Todos los disfraces</h2>
+            <h2 th:if="${busqueda != null && !busqueda.isEmpty()}" th:text="#{catalog.results}">Resultados relacionados</h2>
 
             <p th:if="${busqueda != null && !busqueda.isEmpty()}"
-               th:text="'Resultados para: ' + ${busqueda}">
+               th:text="#{catalog.resultsFor} + ' ' + ${busqueda}">
             </p>
         </div>
 
         <div class="empty-state" th:if="${#lists.isEmpty(disfraces)}">
-            <h3>No encontramos disfraces relacionados</h3>
-            <p>Prueba con otro nombre o limpia los filtros.</p>
-            <a href="/catalogo" class="btn btn-primary">Ver todos</a>
+            <h3 th:text="#{catalog.emptyTitle}">No encontramos disfraces relacionados</h3>
+            <p th:text="#{catalog.emptyText}">Prueba con otro nombre o limpia los filtros.</p>
+            <a href="/catalogo" class="btn btn-primary" th:text="#{catalog.viewAll}">Ver todos</a>
         </div>
 
         <div class="costume-grid" th:if="${!#lists.isEmpty(disfraces)}">
@@ -173,30 +173,30 @@
                          th:alt="${disfraz.nombre}">
 
                     <div class="image-placeholder" th:if="${disfraz.imagenes == null or #lists.isEmpty(disfraz.imagenes)}">
-                        Sin imagen
+                        <span th:text="#{catalog.noImage}">Sin imagen</span>
                     </div>
                 </div>
 
                 <div class="costume-content">
                     <span class="costume-category"
-                          th:text="${disfraz.categoria != null ? disfraz.categoria.nombre : 'Sin categoría'}">
+                          th:text="${disfraz.categoria != null ? disfraz.categoria.nombre : #messages.msg('common.noCategory')}">
                     </span>
 
                     <h3 th:text="${disfraz.nombre}">Nombre disfraz</h3>
 
                     <p class="costume-description"
-                       th:text="${disfraz.descripcion != null && !disfraz.descripcion.isEmpty() ? disfraz.descripcion : 'Sin descripción'}">
+                       th:text="${disfraz.descripcion != null && !disfraz.descripcion.isEmpty() ? disfraz.descripcion : #messages.msg('catalog.noDescription')}">
                     </p>
 
                     <div class="costume-meta">
-                        <span th:text="'Talla: ' + ${disfraz.talla}"></span>
+                        <span th:text="#{catalog.sizePrefix} + ': ' + ${disfraz.talla}"></span>
                         <span th:text="${disfraz.genero}"></span>
                     </div>
 
                     <div class="costume-price">
-                        <strong th:text="'Alquiler: $' + ${disfraz.precioAlquiler}"></strong>
+                        <strong th:text="#{catalog.rental} + ': $' + ${disfraz.precioAlquiler}"></strong>
                         <small th:if="${disfraz.precioCompra != null}"
-                               th:text="'Compra: $' + ${disfraz.precioCompra}">
+                               th:text="#{catalog.purchase} + ': $' + ${disfraz.precioCompra}">
                         </small>
                     </div>
 

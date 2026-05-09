@@ -29,31 +29,31 @@
         </div>
 
         <div class="hero__card">
-            <h2>¿Qué podrás hacer?</h2>
+            <h2 th:text="#{home.features.title}">¿Qué podrás hacer?</h2>
 
             <ul>
-                <li>Consultar disfraces disponibles.</li>
-                <li>Buscar por nombre o categoría.</li>
-                <li>Reservar por fechas.</li>
-                <li>Comprar o alquilar disfraces.</li>
+                <li th:text="#{home.features.catalog}">Consultar disfraces disponibles.</li>
+                <li th:text="#{home.features.search}">Buscar por nombre o categoría.</li>
+                <li th:text="#{home.features.reserve}">Reservar por fechas.</li>
+                <li th:text="#{home.features.buy}">Comprar o alquilar disfraces.</li>
             </ul>
         </div>
     </section>
 
     <section class="features">
         <article class="feature-card">
-            <h3>Catálogo organizado</h3>
-            <p>Los disfraces estarán separados por categorías, tallas y estilos.</p>
+            <h3 th:text="#{home.card.catalog.title}">Catálogo organizado</h3>
+            <p th:text="#{home.card.catalog.text}">Los disfraces estarán separados por categorías, tallas y estilos.</p>
         </article>
 
         <article class="feature-card">
-            <h3>Reservas simples</h3>
-            <p>El usuario podrá elegir fechas y saber si el disfraz está disponible.</p>
+            <h3 th:text="#{home.card.reserve.title}">Reservas simples</h3>
+            <p th:text="#{home.card.reserve.text}">El usuario podrá elegir fechas y saber si el disfraz está disponible.</p>
         </article>
 
         <article class="feature-card">
-            <h3>Gestión admin</h3>
-            <p>El administrador podrá subir fotos, precios y datos desde su apartado.</p>
+            <h3 th:text="#{home.card.admin.title}">Gestión admin</h3>
+            <p th:text="#{home.card.admin.text}">El administrador podrá subir fotos, precios y datos desde su apartado.</p>
         </article>
     </section>
 </main>
