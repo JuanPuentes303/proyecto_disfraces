@@ -15,18 +15,16 @@
 
     <section class="catalog-hero">
         <div>
-            <span class="hero__tag" th:text="#{catalog.hero.tag}">Catálogo</span>
-            <h1 th:text="#{catalog.title}">Encuentra tu disfraz ideal</h1>
-            <p th:text="#{catalog.subtitle}">
-                Busca por nombre o categoría y revisa disponibilidad para tus fechas. ¡Reserva fácil y rápido!
-            </p>
+            <span class="hero__tag" th:text="#{catalog.hero.tag}"></span>
+            <h1 th:text="#{catalog.title}"></h1>
+            <p th:text="#{catalog.subtitle}"></p>
         </div>
     </section>
 
     <section class="catalog-filters">
         <form th:action="@{/catalogo}" method="get" class="filter-form advanced-filter-form">
             <div class="form-group">
-                <label for="busqueda" th:text="#{catalog.search}">Buscar disfraz</label>
+                <label for="busqueda" th:text="#{catalog.search}"></label>
                 <input type="text"
                     id="busqueda"
                     name="busqueda"
@@ -35,9 +33,9 @@
             </div>
 
             <div class="form-group">
-                <label for="categoriaId" th:text="#{catalog.category}">Categoría</label>
+                <label for="categoriaId" th:text="#{catalog.category}"></label>
                 <select id="categoriaId" name="categoriaId">
-                    <option value="" th:text="#{catalog.allCategories}">Todas</option>
+                    <option value="" th:text="#{catalog.allCategories}"></option>
                     <option th:each="categoria : ${categorias}"
                             th:value="${categoria.id}"
                             th:text="${categoria.nombre}"
@@ -72,7 +70,7 @@
             </div>
 
             <div class="form-group">
-                <label for="precioMin" th:text="#{catalog.minPrice}">Precio mínimo</label>
+                <label for="precioMin" th:text="#{catalog.minPrice}"></label>
                 <input type="number"
                     id="precioMin"
                     name="precioMin"
@@ -83,7 +81,7 @@
             </div>
 
             <div class="form-group">
-                <label for="precioMax" th:text="#{catalog.maxPrice}">Precio máximo</label>
+                <label for="precioMax" th:text="#{catalog.maxPrice}"></label>
                 <input type="number"
                     id="precioMax"
                     name="precioMax"
@@ -94,16 +92,16 @@
             </div>
 
             <div class="filter-actions">
-                <button type="submit" class="btn btn-primary" th:text="#{catalog.searchButton}">Buscar</button>
-            <a href="/catalogo" class="btn btn-secondary" th:text="#{catalog.clear}">Limpiar</a>
+                <button type="submit" class="btn btn-primary" th:text="#{catalog.searchButton}"></button>
+            <a href="/catalogo" class="btn btn-secondary" th:text="#{catalog.clear}"></a>
             </div>
         </form>
     </section>
 
     <section class="catalog-section" th:if="${!#lists.isEmpty(aleatorios)}">
         <div class="section-title">
-            <h2 th:text="#{catalog.featured}">Disfraces destacados</h2>
-            <p th:text="#{catalog.featuredText}">Una selección aleatoria de disfraces subidos por el administrador.</p>
+            <h2 th:text="#{catalog.featured}"></h2>
+            <p th:text="#{catalog.featuredText}"></p>
         </div>
 
         <div class="costume-grid">
@@ -114,7 +112,7 @@
                          th:alt="${disfraz.nombre}">
 
                     <div class="image-placeholder" th:if="${disfraz.imagenes == null or #lists.isEmpty(disfraz.imagenes)}">
-                        <span th:text="#{catalog.noImage}">Sin imagen</span>
+                        <span th:text="#{catalog.noImage}"></span>
                     </div>
                 </div>
 
@@ -123,7 +121,7 @@
                           th:text="${disfraz.categoria != null ? disfraz.categoria.nombre : #messages.msg('common.noCategory')}">
                     </span>
 
-                    <h3 th:text="${disfraz.nombre}">Nombre disfraz</h3>
+                    <h3 th:text="${disfraz.nombre}"></h3>
 
                     <p class="costume-description"
                        th:text="${disfraz.descripcion != null && !disfraz.descripcion.isEmpty() ? disfraz.descripcion : #messages.msg('catalog.noDescription')}">
@@ -141,9 +139,7 @@
                         </small>
                     </div>
 
-                    <a th:href="@{/disfraces/{id}(id=${disfraz.id})}" class="btn btn-primary btn-full" th:text="#{catalog.detail}">
-                        Ver detalle
-                    </a>
+                    <a th:href="@{/disfraces/{id}(id=${disfraz.id})}" class="btn btn-primary btn-full" th:text="#{catalog.detail}"></a>
                 </div>
             </article>
         </div>
@@ -151,8 +147,8 @@
 
     <section class="catalog-section">
         <div class="section-title">
-            <h2 th:if="${busqueda == null || busqueda.isEmpty()}" th:text="#{catalog.all}">Todos los disfraces</h2>
-            <h2 th:if="${busqueda != null && !busqueda.isEmpty()}" th:text="#{catalog.results}">Resultados relacionados</h2>
+            <h2 th:if="${busqueda == null || busqueda.isEmpty()}" th:text="#{catalog.all}"></h2>
+            <h2 th:if="${busqueda != null && !busqueda.isEmpty()}" th:text="#{catalog.results}"></h2>
 
             <p th:if="${busqueda != null && !busqueda.isEmpty()}"
                th:text="#{catalog.resultsFor} + ' ' + ${busqueda}">
@@ -160,9 +156,9 @@
         </div>
 
         <div class="empty-state" th:if="${#lists.isEmpty(disfraces)}">
-            <h3 th:text="#{catalog.emptyTitle}">No encontramos disfraces relacionados</h3>
-            <p th:text="#{catalog.emptyText}">Prueba con otro nombre o limpia los filtros.</p>
-            <a href="/catalogo" class="btn btn-primary" th:text="#{catalog.viewAll}">Ver todos</a>
+            <h3 th:text="#{catalog.emptyTitle}"></h3>
+            <p th:text="#{catalog.emptyText}"></p>
+            <a href="/catalogo" class="btn btn-primary" th:text="#{catalog.viewAll}"></a>
         </div>
 
         <div class="costume-grid" th:if="${!#lists.isEmpty(disfraces)}">
@@ -173,7 +169,7 @@
                          th:alt="${disfraz.nombre}">
 
                     <div class="image-placeholder" th:if="${disfraz.imagenes == null or #lists.isEmpty(disfraz.imagenes)}">
-                        <span th:text="#{catalog.noImage}">Sin imagen</span>
+                        <span th:text="#{catalog.noImage}"></span>
                     </div>
                 </div>
 
@@ -182,7 +178,7 @@
                           th:text="${disfraz.categoria != null ? disfraz.categoria.nombre : #messages.msg('common.noCategory')}">
                     </span>
 
-                    <h3 th:text="${disfraz.nombre}">Nombre disfraz</h3>
+                    <h3 th:text="${disfraz.nombre}"></h3>
 
                     <p class="costume-description"
                        th:text="${disfraz.descripcion != null && !disfraz.descripcion.isEmpty() ? disfraz.descripcion : #messages.msg('catalog.noDescription')}">
@@ -200,9 +196,7 @@
                         </small>
                     </div>
 
-                    <a th:href="@{/disfraces/{id}(id=${disfraz.id})}" class="btn btn-primary btn-full" th:text="#{catalog.detail}">
-                        Ver detalle
-                    </a>
+                    <a th:href="@{/disfraces/{id}(id=${disfraz.id})}" class="btn btn-primary btn-full" th:text="#{catalog.detail}"></a>
                 </div>
             </article>
         </div>

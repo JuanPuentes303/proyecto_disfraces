@@ -123,3 +123,9 @@ $RECYCLE.BIN/
 *.swo
 *.bak
 *.orig
+
+# SSL / TLS certificates and keystores
+*.p12
+*.jks
+*.keystore
+src/main/resources/keystore/

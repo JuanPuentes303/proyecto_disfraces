@@ -14,28 +14,28 @@
 <main class="admin-page">
     <section class="admin-header">
         <div>
-            <h1 th:text="#{reservations.my.title}">Mis reservas</h1>
-            <p th:text="#{reservations.my.subtitle}">Consulta los disfraces que has reservado.</p>
+            <h1 th:text="#{reservations.my.title}"></h1>
+            <p th:text="#{reservations.my.subtitle}"></p>
         </div>
 
-        <a href="/catalogo" class="btn btn-primary" th:text="#{reservations.catalog}">Ver catálogo</a>
+        <a href="/catalogo" class="btn btn-primary" th:text="#{reservations.catalog}"></a>
     </section>
 
     <div class="alert alert-success" th:if="${param.creada}">
-        <span th:text="#{reservations.created}">Reserva creada correctamente.</span>
+        <span th:text="#{reservations.created}"></span>
     </div>
 
     <section class="admin-table-wrapper">
         <table class="admin-table">
             <thead>
             <tr>
-                <th th:text="#{admin.table.image}">Imagen</th>
-                <th th:text="#{admin.costumes}">Disfraz</th>
-                <th th:text="#{admin.table.type}">Tipo</th>
-                <th th:text="#{detail.startDate}">Fecha inicio</th>
-                <th th:text="#{detail.endDate}">Fecha fin</th>
-                <th th:text="#{admin.table.status}">Estado</th>
-                <th th:text="#{admin.table.observations}">Observaciones</th>
+                <th th:text="#{admin.table.image}"></th>
+                <th th:text="#{admin.costumes}"></th>
+                <th th:text="#{admin.table.type}"></th>
+                <th th:text="#{detail.startDate}"></th>
+                <th th:text="#{detail.endDate}"></th>
+                <th th:text="#{admin.table.status}"></th>
+                <th th:text="#{admin.table.observations}"></th>
             </tr>
             </thead>
 
@@ -47,25 +47,21 @@
                          th:src="@{${reserva.imagenDisfrazUrl}}"
                          alt="Imagen del disfraz">
 
-                    <span th:if="${reserva.imagenDisfrazUrl == null}" th:text="#{common.noImage}">
-                        Sin imagen
-                    </span>
+                    <span th:if="${reserva.imagenDisfrazUrl == null}" th:text="#{common.noImage}"></span>
                 </td>
 
-                <td th:text="${reserva.nombreDisfraz}">Nombre disfraz</td>
-                <td th:text="${reserva.tipo}">Tipo</td>
-                <td th:text="${reserva.fechaInicio}">Fecha inicio</td>
-                <td th:text="${reserva.fechaFin}">Fecha fin</td>
+                <td th:text="${reserva.nombreDisfraz}"></td>
+                <td th:text="${reserva.tipo}"></td>
+                <td th:text="${reserva.fechaInicio}"></td>
+                <td th:text="${reserva.fechaFin}"></td>
                 <td>
-                    <span class="status-pill" th:text="${reserva.estado}">Estado</span>
+                    <span class="status-pill" th:text="${reserva.estado}"></span>
                 </td>
-                <td th:text="${reserva.observaciones != null ? reserva.observaciones : 'Sin observaciones'}">
-                    Observaciones
-                </td>
+                <td th:text="${reserva.observaciones != null ? reserva.observaciones : 'Sin observaciones'}"></td>
             </tr>
 
             <tr th:if="${#lists.isEmpty(reservas)}">
-                <td colspan="7" th:text="#{reservations.empty}">Todavía no tienes reservas.</td>
+                <td colspan="7" th:text="#{reservations.empty}"></td>
             </tr>
             </tbody>
         </table>

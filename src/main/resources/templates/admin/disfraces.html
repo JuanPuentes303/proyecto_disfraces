@@ -13,37 +13,37 @@
 <main class="admin-page">
     <section class="admin-header">
         <div>
-            <h1 th:text="#{admin.costumes.title}">Disfraces registrados</h1>
-            <p th:text="#{admin.costumes.subtitle}">Lista de disfraces subidos por el administrador.</p>
+            <h1 th:text="#{admin.costumes.title}"></h1>
+            <p th:text="#{admin.costumes.subtitle}"></p>
         </div>
 
-        <a href="/admin/disfraces/nuevo" class="btn btn-primary" th:text="#{admin.costumes.new}">Nuevo disfraz</a>
+        <a href="/admin/disfraces/nuevo" class="btn btn-primary" th:text="#{admin.costumes.new}"></a>
     </section>
 
     <div class="alert alert-success" th:if="${param.creado}">
-        <span th:text="#{admin.costumes.created}">Disfraz creado correctamente.</span>
+        <span th:text="#{admin.costumes.created}"></span>
     </div>
 
     <div class="alert alert-success" th:if="${param.actualizado}">
-        <span th:text="#{admin.costumes.updated}">Disfraz actualizado correctamente.</span>
+        <span th:text="#{admin.costumes.updated}"></span>
     </div>
 
     <div class="alert alert-success" th:if="${param.desactivado}">
-        <span th:text="#{admin.costumes.disabled}">Disfraz desactivado correctamente.</span>
+        <span th:text="#{admin.costumes.disabled}"></span>
     </div>
 
     <section class="admin-table-wrapper">
         <table class="admin-table">
             <thead>
             <tr>
-                <th th:text="#{admin.table.image}">Imagen</th>
-                <th th:text="#{admin.table.name}">Nombre</th>
-                <th th:text="#{admin.table.category}">Categoría</th>
-                <th th:text="#{admin.table.size}">Talla</th>
-                <th th:text="#{admin.table.gender}">Género</th>
-                <th th:text="#{admin.table.rental}">Alquiler</th>
-                <th th:text="#{admin.table.purchase}">Compra</th>
-                <th th:text="#{admin.table.actions}">Acciones</th>
+                <th th:text="#{admin.table.image}"></th>
+                <th th:text="#{admin.table.name}"></th>
+                <th th:text="#{admin.table.category}"></th>
+                <th th:text="#{admin.table.size}"></th>
+                <th th:text="#{admin.table.gender}"></th>
+                <th th:text="#{admin.table.rental}"></th>
+                <th th:text="#{admin.table.purchase}"></th>
+                <th th:text="#{admin.table.actions}"></th>
             </tr>
             </thead>
 
@@ -55,7 +55,7 @@
                          th:src="@{${disfraz.imagenes[0].urlImagen}}"
                          alt="Imagen disfraz">
 
-                    <span th:if="${disfraz.imagenes == null or #lists.isEmpty(disfraz.imagenes)}" th:text="#{common.noImage}">Sin imagen</span>
+                    <span th:if="${disfraz.imagenes == null or #lists.isEmpty(disfraz.imagenes)}" th:text="#{common.noImage}"></span>
                 </td>
 
                 <td th:text="${disfraz.nombre}"></td>
@@ -75,16 +75,14 @@
                         <form th:action="@{/admin/disfraces/{id}/desactivar(id=${disfraz.id})}"
                               method="post"
                               onsubmit="return confirm('¿Seguro que deseas desactivar este disfraz?');">
-                            <button type="submit" class="btn-small btn-danger" th:text="#{admin.actions.disable}">
-                                Desactivar
-                            </button>
+                            <button type="submit" class="btn-small btn-danger" th:text="#{admin.actions.disable}"></button>
                         </form>
                     </div>
                 </td>
             </tr>
 
             <tr th:if="${#lists.isEmpty(disfraces)}">
-                <td colspan="8" th:text="#{admin.costumes.empty}">Todavía no hay disfraces registrados.</td>
+                <td colspan="8" th:text="#{admin.costumes.empty}"></td>
             </tr>
             </tbody>
         </table>
